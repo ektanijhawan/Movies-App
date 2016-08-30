@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -263,7 +262,8 @@ final Movie movie= new Movie();
         i.putExtra("Image", movie.getUrlThumbnail());
         i.putExtra("favourite",false);
         i.putExtra("id",movie.getId());
-
+        Classh c= new Classh();
+        c.setData("title");
         startActivity(i);
 
     }

@@ -7,13 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -40,10 +41,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabHost;
+import it.neokree.materialtabs.MaterialTabListener;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentMovieDetail extends Fragment {
+public class FragmentMovieDetail extends Fragment implements MaterialTabListener {
 
     public ImageLoader imageLoader;
     public VolleySingleton volleySingleton;
@@ -88,10 +93,13 @@ ImageView image;
     String overview="";
     String vote_average="";
     int hours=0;
+    public MaterialTabHost tabHost;
+    public ViewPager viewPager;
     String titleStr="";
     int minutes=0;
     String popularity="";
     Movie movieInfo;
+    String movieVideosInfo;
     RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -99,6 +107,8 @@ ImageView image;
     ImageView movieImage;
     FloatingActionButton fab;
     ImageView back;
+    private ArrayList<String> mTrailerInfo = new ArrayList<>();
+    private ArrayList<String> mReviewInfo = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,7 +133,36 @@ movie= new Movie();
         });
         movieID = getArguments().getString("stringId");
      //   fragmentValue = getArguments().getInt("fragmentId");
+
+
+        tabHost = (MaterialTabHost)view. findViewById(R.id.materialTabHost1);
+
+        viewPager = (ViewPager)view. findViewById(R.id.viewpager);
+
+        MyPagerAdapter adapter = new MyPagerAdapter(getFragmentManager());
+
+
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+
+                tabHost.setSelectedNavigationItem(position);
+            }
+        });
+
+        for (int i = 0; i < adapter.getCount(); i++) {
+
+            tabHost.addTab(
+                    tabHost.newTab()
+                            .setText(adapter.getPageTitle(i))
+                            .setTabListener(this));
+
+        }
+
+
         sendjsonRequest(movieID);
+        //sendjsonRequestVideos(movieID);
 
         return view;
     }
@@ -142,7 +181,21 @@ movie= new Movie();
                 movieInfo = parseJsonResponse(response);
 
                 mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
+
                 mRecyclerView.setAdapter(mAdapter);
+                Bundle data = new Bundle();
+                data.putString("title","titleStr");
+
+                FragmentTransaction t = getActivity().getSupportFragmentManager()
+                        .beginTransaction();
+                FragmentMovieOverview mFrag = new FragmentMovieOverview();
+                mFrag.setArguments(data);
+                t.replace(R.id.movieDetailOverviewFrameLayout, mFrag);
+            //    Toast.makeText(getActivity() ,"hhhhhhhhhh ",Toast.LENGTH_SHORT).show();
+                t.commit();
+
+Classh c= new Classh();
+                c.setData("title");
                 mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);
@@ -258,6 +311,109 @@ movie= new Movie();
         return movie;
     }
 
+
+    public void sendjsonRequestVideos(String id)
+    {
+
+        JsonObjectRequest request= new JsonObjectRequest(Request.Method.GET
+                , "http://api.themoviedb.org/3/movie/"+id+"/videos?api_key=74a8c711917fabf892c994dc63136a80"
+
+                , new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                mTrailerInfo = parseJsonResponseVidedos(response);
+
+                //mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
+                //mRecyclerView.setAdapter(mAdapter);
+                //mAdapter.notifyDataSetChanged();
+
+                //adapterBoxOffice.setMovieList(listMovies);
+                //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //  Toast.makeText(getActivity(),"error" + " ",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        requestQueue.add(request)    ;
+
+
+    }
+
+    public ArrayList<String> parseJsonResponseVidedos(JSONObject response)
+    {
+
+        try {
+            JSONArray mTrailerResultArray = response.getJSONArray("results");
+            for (int i = 0; i < mTrailerResultArray.length(); i++) {
+                JSONObject mTrailerObject = mTrailerResultArray.getJSONObject(i);
+                mTrailerInfo.add(mTrailerObject.getString("key") + ",," + mTrailerObject.getString("name")
+                        + ",," + mTrailerObject.getString("site") + ",," + mTrailerObject.getString("size")
+                        + ",," + mTrailerObject.getString("type"));
+            }
+
+
+        }
+        catch (JSONException e)
+        {}
+
+           return mTrailerInfo;
+    }
+
+
+    public void sendJsonRequestReviews(String id)
+    {
+
+        JsonObjectRequest request= new JsonObjectRequest(Request.Method.GET
+                , "http://api.themoviedb.org/3/movie/"+id+"/reviews?api_key=74a8c711917fabf892c994dc63136a80"
+
+                , new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                mReviewInfo = parseJsonResponseVidedos(response);
+
+                //mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
+                //mRecyclerView.setAdapter(mAdapter);
+                //mAdapter.notifyDataSetChanged();
+
+                //adapterBoxOffice.setMovieList(listMovies);
+                //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //  Toast.makeText(getActivity(),"error" + " ",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        requestQueue.add(request)    ;
+
+
+    }
+
+    public ArrayList<String> parseJsonResponseReviews(JSONObject response)
+    {
+
+        try {
+            JSONArray mReviewResultArray = response.getJSONArray("results");
+            for (int i = 0; i < mReviewResultArray.length(); i++) {
+                JSONObject mTrailerObject = mReviewResultArray.getJSONObject(i);
+                mReviewInfo.add(mTrailerObject.getString("author") + "," + mTrailerObject.getString("content"));
+
+
+            }
+        }
+        catch (JSONException e)
+        {}
+
+        return mTrailerInfo;
+    }
     protected void sendEmail() {
         Log.i("Send email", "");
         String[] TO = {""};
@@ -291,6 +447,21 @@ movie= new Movie();
         return shareIntent;
     }
 
+    @Override
+    public void onTabSelected(MaterialTab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(MaterialTab tab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(MaterialTab tab) {
+
+    }
+
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -308,5 +479,69 @@ movie= new Movie();
     */
 
 
+    class MyPagerAdapter extends FragmentStatePagerAdapter {
 
+
+
+        //int[] icons={R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher};
+        String[] tabText=getResources().getStringArray(R.array.tabs);
+        public MyPagerAdapter(FragmentManager fm) {
+
+            super(fm);
+            tabText= getResources().getStringArray(R.array.tabs);
+            //Fragment   fragment=FragmentSearch.newInstance("", "");
+        }
+
+        //  @Override
+        //  public CharSequence getPageTitle(int position) {
+////
+        //  Drawable drawable= getResources().getDrawable(icons[position]);
+        //  drawable.setBounds(0,0,36,36);
+        //  ImageSpan imageSpan=new ImageSpan(drawable);
+        //  SpannableString spannableString=new SpannableString(" ");
+        //  spannableString.setSpan(imageSpan,0,spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //    return tabText[position];
+        // }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment= null;
+
+            switch(position){
+
+                case 0 :
+
+                    //  fragment=FragmentPopular.newInstance("","");
+                    fragment= FragmentMovieOverview.newInstance("","");
+
+                    break;
+                case 1 :
+                    fragment= FragmentMovieOverview.newInstance("","");
+
+                    break;
+                case 2 :
+
+
+                    fragment= FragmentMovieOverview.newInstance("","");
+                    break;
+
+
+            }
+
+            return fragment;
+            //return null;
+        }
+
+
+
+        public CharSequence getPageTitle(int position)
+        {
+            return tabText[position];
+
+        }
+        @Override
+        public int getCount() {
+            return 3;
+        }
+    }
 }

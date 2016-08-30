@@ -58,7 +58,7 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
     public void onBindViewHolder(MovieDetailAdapter.MovieDetailViewHolder holder, int position) {
 
         ((MovieDetailViewHolder) holder).movieName.setText(movie.getTitle());
-       if(!movie.getTagLine().equals("")) {
+     /*  if(!movie.getTagLine().equals("")) {
             ((MovieDetailViewHolder) holder).movieTagLine.setText("\" " + movie.getTagLine() + " \"");
         }else if(movie.getTagLine().equals("")) {
             ((MovieDetailViewHolder) holder).movieTagLine.setVisibility(View.GONE);
@@ -76,7 +76,7 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
         //((MovieDetailViewHolder) holder).movieRating.setText(String.format((movie.getRating()) + ""));
         ((MovieDetailViewHolder) holder).movieSynopsis.setText(movie.getOverview());
 
-
+*/
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
     public  class MovieDetailViewHolder extends RecyclerView.ViewHolder{
         private TextView movieName, movieTagLine, movieReleaseDate, movieDuration, movieGenre, moviePopularity, movieSynopsis, movieRating, movieLanguage;
         public ImageView movieImage;
-        // public TextView movieTitle;
+
 
 
         public MovieDetailViewHolder(View itemView) {

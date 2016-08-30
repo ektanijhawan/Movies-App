@@ -28,37 +28,68 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
+
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme"/>
 
             <ImageView
+
                 android:id="@+id/ivMovieImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"/>
+                app:layout_collapseMode="parallax"
+                />
 
             <ImageView
+
                 android:id="@+id/ivBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/like"
+
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="10dp"
                 android:padding="3dp"
                 app:layout_collapseMode="pin"/>
+
+
+            <it.neokree.materialtabs.MaterialTabHost
+                android:id="@+id/materialTabHost1"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                app:textColor="#FFFFFF"
+                app:primaryColor="@color/colorPrimary"
+                app:accentColor="@color/colorAccent" />
+
+
         </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
+
+
+
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#FF0"
         android:src="@drawable/like"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="110dp"/>
+    <android.support.v4.view.ViewPager
+        app:layout_anchorGravity="bottom"
+        android:layout_gravity="bottom"
         app:layout_anchor="@+id/collapsing_toolbar"
-        app:layout_anchorGravity="bottom|right|end" />
+        android:id="@+id/viewpager"
+        android:layout_below="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        />
 </android.support.design.widget.CoordinatorLayout>

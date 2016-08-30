@@ -51,6 +51,7 @@ public class FragmentMovieOverview extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +68,20 @@ public class FragmentMovieOverview extends Fragment {
         //Intent intent=getI
 
         View view=inflater.inflate(R.layout.fragment__movie__overview, container, false);
-        Bundle bundle = this.getArguments();
-      String strtext = bundle.getString("e");
+     //   Bundle bundle = this.getArguments();
+      //String strtext = bundle.getString("e");
         String s=null;
-if(strtext.equals(s))
-      Toast.makeText(getActivity(),"empty",Toast.LENGTH_SHORT).show();
+        Bundle bundle = this.getArguments();
+        String title = bundle.getString("title");
+       // int a= bundle.getInt("1");
+//if(strtext.equals(s))
+        Classh h= new Classh();
+
+  // Toast.makeText(getActivity(),h.getData(),Toast.LENGTH_SHORT).show();
 
 
-      mTextView = (TextView) view.findViewById(R.id.hey);
-       mTextView.setText(strtext );
+    mTextView = (TextView) view.findViewById(R.id.hey);
+      mTextView.setText(title);
         return view;
     }
 
