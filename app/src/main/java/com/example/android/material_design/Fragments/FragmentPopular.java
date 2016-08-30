@@ -262,8 +262,7 @@ final Movie movie= new Movie();
         i.putExtra("Image", movie.getUrlThumbnail());
         i.putExtra("favourite",false);
         i.putExtra("id",movie.getId());
-        Classh c= new Classh();
-        c.setData("title");
+
         startActivity(i);
 
     }

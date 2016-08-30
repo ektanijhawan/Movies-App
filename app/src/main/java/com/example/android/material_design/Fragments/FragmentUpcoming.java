@@ -253,8 +253,7 @@ public long dbId;
         i.putExtra("Image",movie.getUrlThumbnail());
         i.putExtra("favourite",false);
 
-            Classh c= new Classh();
-            c.setData("title");
+
         startActivity(i);
 
     }

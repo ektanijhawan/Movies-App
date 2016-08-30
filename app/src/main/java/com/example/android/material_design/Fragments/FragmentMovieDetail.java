@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -135,30 +133,6 @@ movie= new Movie();
      //   fragmentValue = getArguments().getInt("fragmentId");
 
 
-        tabHost = (MaterialTabHost)view. findViewById(R.id.materialTabHost1);
-
-        viewPager = (ViewPager)view. findViewById(R.id.viewpager);
-
-        MyPagerAdapter adapter = new MyPagerAdapter(getFragmentManager());
-
-
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-
-                tabHost.setSelectedNavigationItem(position);
-            }
-        });
-
-        for (int i = 0; i < adapter.getCount(); i++) {
-
-            tabHost.addTab(
-                    tabHost.newTab()
-                            .setText(adapter.getPageTitle(i))
-                            .setTabListener(this));
-
-        }
 
 
         sendjsonRequest(movieID);
@@ -186,16 +160,15 @@ movie= new Movie();
                 Bundle data = new Bundle();
                 data.putString("title","titleStr");
 
-                FragmentTransaction t = getActivity().getSupportFragmentManager()
+             /*   FragmentTransaction t = getActivity().getSupportFragmentManager()
                         .beginTransaction();
                 FragmentMovieOverview mFrag = new FragmentMovieOverview();
                 mFrag.setArguments(data);
-                t.replace(R.id.movieDetailOverviewFrameLayout, mFrag);
-            //    Toast.makeText(getActivity() ,"hhhhhhhhhh ",Toast.LENGTH_SHORT).show();
+                t.replace(R.id.viewpager, mFrag);
+                Toast.makeText(getActivity() ,"hhhhhhhhhh ",Toast.LENGTH_SHORT).show();
                 t.commit();
+                */
 
-Classh c= new Classh();
-                c.setData("title");
                 mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);

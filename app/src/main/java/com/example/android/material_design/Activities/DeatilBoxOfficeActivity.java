@@ -59,7 +59,6 @@ public class DeatilBoxOfficeActivity extends AppCompatActivity {
                 .commit();
 
 
-
 /*
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
