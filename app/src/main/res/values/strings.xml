@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">material_design</string>
+    <string name="action_settings">Settings</string>
+    <string name="next">next</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_closed">Close</string>
+    <string name="action_send">Send</string>
+    <string-array name="tabs">
+        <item>POPULAR</item>
+        <item>TOP RATED</item>
+        <item>Favourite</item>
+    </string-array>
+    <string name="title_activity_deatil_box_office">DeatilBoxOfficeActivity</string>
+</resources>
