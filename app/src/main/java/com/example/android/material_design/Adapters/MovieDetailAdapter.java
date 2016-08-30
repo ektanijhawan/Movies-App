@@ -58,12 +58,12 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
     public void onBindViewHolder(MovieDetailAdapter.MovieDetailViewHolder holder, int position) {
 
         ((MovieDetailViewHolder) holder).movieName.setText(movie.getTitle());
-        if(!movie.getTagLine().equals("")) {
+       if(!movie.getTagLine().equals("")) {
             ((MovieDetailViewHolder) holder).movieTagLine.setText("\" " + movie.getTagLine() + " \"");
         }else if(movie.getTagLine().equals("")) {
             ((MovieDetailViewHolder) holder).movieTagLine.setVisibility(View.GONE);
         }
-        ((MovieDetailViewHolder) holder).movieReleaseDate.setText(movie.getReleasedate() + "(" + movie.getStatus() + ")");
+        ((MovieDetailViewHolder) holder).movieReleaseDate.setText(movie.getReleasedate());//+ "(" + movie.getStatus() + ")");
 
         int durationInMin = movie.getDuration();
         int hours = durationInMin / 60;
@@ -71,16 +71,17 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
         ((MovieDetailViewHolder) holder).movieDuration.setText("Duration: " + hours + " hr " + minutes + " min");
 
         ((MovieDetailViewHolder) holder).movieGenre.setText("Genre: " + movie.getGenre());
-        ((MovieDetailViewHolder) holder).movieLanguage.setText(String.format("Language: " + movie.getLanguage()));
-        ((MovieDetailViewHolder) holder).moviePopularity.setText(String.format("%.1f", movie.getPopularity()) + "");
-        ((MovieDetailViewHolder) holder).movieRating.setText(String.format((movie.getRating()) + ""));
+      //  ((MovieDetailViewHolder) holder).movieLanguage.setText(String.format("Language: " + movie.getLanguage()));
+//        ((MovieDetailViewHolder) holder).moviePopularity.setText(String.format("%.1f", movie.getPopularity()) + "");
+        //((MovieDetailViewHolder) holder).movieRating.setText(String.format((movie.getRating()) + ""));
         ((MovieDetailViewHolder) holder).movieSynopsis.setText(movie.getOverview());
+
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return 1;
     }
 
     public  class MovieDetailViewHolder extends RecyclerView.ViewHolder{

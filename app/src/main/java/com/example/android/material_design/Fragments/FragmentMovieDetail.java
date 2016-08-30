@@ -140,6 +140,7 @@ movie= new Movie();
             @Override
             public void onResponse(JSONObject response) {
                 movieInfo = parseJsonResponse(response);
+
                 mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
@@ -222,9 +223,12 @@ movie= new Movie();
                 movie.setTitle(titleStr);
                 // movie.setTagLine(tagLine);
                 movie.setReleasedate(releaseDate);
+                movie.setDuration(duration);
+               // movie.setGenre(genres);
                 //  movie.setStatus(status);
                 movie.setOverview(overview);
                 movie.setCoverImage(imageString);
+                movie.setTagLine(tagline);
                 // movie.setImage(image);
                 movie.setDuration(duration);
                 movie.setPopularity(Float.parseFloat(popularity));
@@ -249,7 +253,7 @@ movie= new Movie();
 
 
 
-
+ // Toast.makeText(getActivity(),movie.toString(),Toast.LENGTH_LONG).show();
 
         return movie;
     }
