@@ -3,6 +3,7 @@ package com.example.android.material_design.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +33,9 @@ import com.example.android.material_design.Database.DbHelper;
 import com.example.android.material_design.Movie;
 import com.example.android.material_design.R;
 import com.example.android.material_design.VolleySingleton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+//import com.ldoublem.thumbUplib.ThumbUpView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,6 +99,7 @@ ImageView image;
     public ViewPager viewPager;
     String titleStr="";
     int minutes=0;
+    TextView movieName;
     String popularity="";
     Movie movieInfo;
     String movieVideosInfo;
@@ -105,13 +110,14 @@ ImageView image;
     ImageView movieImage;
     FloatingActionButton fab;
     ImageView back;
+//    ThumbUpView mThumbUpView;
     private ArrayList<String> mTrailerInfo = new ArrayList<>();
     private ArrayList<String> mReviewInfo = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-
+movieName= (TextView) view.findViewById(R.id.movieName);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_movie_detail);
         mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -132,12 +138,69 @@ movie= new Movie();
         movieID = getArguments().getString("stringId");
      //   fragmentValue = getArguments().getInt("fragmentId");
 
+//mThumbUpView= (ThumbUpView) view.findViewById(R.id.tpv);
+        ImageView icon = new ImageView(getActivity());
+        icon.setImageResource(R.mipmap.ic_launcher);
 
+     //   FloatingActionButton actionButton = new FloatingActionButton.Builder(getActivity())
+       //         .setContentView(icon)
+         //       .build();
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
+        // repeat many times:
+        ImageView itemIcon1 = new ImageView(getActivity());
+        itemIcon1.setImageResource(R.mipmap.ic_launcher);
 
+        ImageView itemIcon2 = new ImageView(getActivity());
+        itemIcon2.setImageResource(R.mipmap.ic_launcher);
+
+        ImageView itemIcon3 = new ImageView(getActivity());
+        itemIcon3.setImageResource(R.mipmap.ic_launcher);
+
+        SubActionButton button1 = itemBuilder.setContentView(itemIcon1).build();
+        SubActionButton button2 = itemBuilder.setContentView(itemIcon2).build();
+        SubActionButton button3 = itemBuilder.setContentView(itemIcon3).build();
+
+        //attach the sub buttons to the main button
+        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(getActivity())
+                .addSubActionView(button1)
+                .addSubActionView(button2)
+                .addSubActionView(button3)
+                .attachTo(fab)
+                .build();
 
         sendjsonRequest(movieID);
-        //sendjsonRequestVideos(movieID);
 
+        itemIcon1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendjsonRequestVideos(movieID);
+
+            }
+        });
+        itemIcon2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendJsonRequestReviews(movieID);
+            }
+        });
+        itemIcon3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // your code here
+            }
+        });
+
+
+        //sendjsonRequestVideos(movieID);
+     /*   mThumbUpView.setUnLikeType(ThumbUpView.LikeType.broken);
+        mThumbUpView.setCracksColor(Color.rgb(22, 33, 44));
+        mThumbUpView.setFillColor(Color.rgb(11, 200, 77));
+        mThumbUpView.setEdgeColor(Color.rgb(33, 3, 219));
+        mThumbUpView.setOnThumbUp(new ThumbUpView.OnThumbUp() {
+            @Override
+            public void like(boolean like) {
+            }
+        });
+        mThumbUpView.Like();
+        mThumbUpView.UnLike();
+        */
         return view;
     }
 
@@ -154,11 +217,10 @@ movie= new Movie();
             public void onResponse(JSONObject response) {
                 movieInfo = parseJsonResponse(response);
 
-                mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
+//                mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
 
-                mRecyclerView.setAdapter(mAdapter);
-                Bundle data = new Bundle();
-                data.putString("title","titleStr");
+  //              mRecyclerView.setAdapter(mAdapter);
+
 
              /*   FragmentTransaction t = getActivity().getSupportFragmentManager()
                         .beginTransaction();
@@ -244,7 +306,7 @@ movie= new Movie();
                     });
 
                 }
-
+movieName.setText(titleStr);
                 movie.setId(id);
                 movie.setTitle(titleStr);
                 // movie.setTagLine(tagLine);
@@ -260,7 +322,7 @@ movie= new Movie();
                 movie.setPopularity(Float.parseFloat(popularity));
                 movie.setGenre(genres);       //tvGenre.setText(genres);
 
-
+                movie.setRating(Float.parseFloat(vote_average));
             } catch (JSONException e){}
 
         /*    title.setText(titleStr);
@@ -273,7 +335,7 @@ movie= new Movie();
             tvDuration.setText("Duration: " + hours + " hr " + minutes + " min");
 */
 
-           // movie.setRating(rating);
+
             //movie.setLanguage(language);
         }
 
@@ -297,9 +359,9 @@ movie= new Movie();
             public void onResponse(JSONObject response) {
                 mTrailerInfo = parseJsonResponseVidedos(response);
 
-                //mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
-                //mRecyclerView.setAdapter(mAdapter);
-                //mAdapter.notifyDataSetChanged();
+              mAdapter = new MovieDetailAdapter(movieInfo,mTrailerInfo,getActivity());
+                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);
                 //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
@@ -324,9 +386,9 @@ movie= new Movie();
             JSONArray mTrailerResultArray = response.getJSONArray("results");
             for (int i = 0; i < mTrailerResultArray.length(); i++) {
                 JSONObject mTrailerObject = mTrailerResultArray.getJSONObject(i);
-                mTrailerInfo.add(mTrailerObject.getString("key") + ",," + mTrailerObject.getString("name")
-                        + ",," + mTrailerObject.getString("site") + ",," + mTrailerObject.getString("size")
-                        + ",," + mTrailerObject.getString("type"));
+                mTrailerInfo.add(mTrailerObject.getString("key") + "," + mTrailerObject.getString("name")
+                        + "," + mTrailerObject.getString("site") + "," + mTrailerObject.getString("size")
+                        + "," + mTrailerObject.getString("type"));
             }
 
 
@@ -348,11 +410,11 @@ movie= new Movie();
 
             @Override
             public void onResponse(JSONObject response) {
-                mReviewInfo = parseJsonResponseVidedos(response);
+                mReviewInfo = parseJsonResponseReviews(response);
 
-                //mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
-                //mRecyclerView.setAdapter(mAdapter);
-                //mAdapter.notifyDataSetChanged();
+                mAdapter = new MovieDetailAdapter(movieInfo,mReviewInfo,getActivity(),1);
+                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);
                 //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
