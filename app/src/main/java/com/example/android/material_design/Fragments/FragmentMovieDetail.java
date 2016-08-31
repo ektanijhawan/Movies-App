@@ -568,16 +568,6 @@ mRecyclerView.setAlpha(0);
             //Fragment   fragment=FragmentSearch.newInstance("", "");
         }
 
-        //  @Override
-        //  public CharSequence getPageTitle(int position) {
-////
-        //  Drawable drawable= getResources().getDrawable(icons[position]);
-        //  drawable.setBounds(0,0,36,36);
-        //  ImageSpan imageSpan=new ImageSpan(drawable);
-        //  SpannableString spannableString=new SpannableString(" ");
-        //  spannableString.setSpan(imageSpan,0,spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        //    return tabText[position];
-        // }
 
         @Override
         public Fragment getItem(int position) {
