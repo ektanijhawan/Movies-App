@@ -558,8 +558,6 @@ mRecyclerView.setAlpha(0);
     class MyPagerAdapter extends FragmentStatePagerAdapter {
 
 
-
-        //int[] icons={R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher};
         String[] tabText=getResources().getStringArray(R.array.tabs);
         public MyPagerAdapter(FragmentManager fm) {
 
