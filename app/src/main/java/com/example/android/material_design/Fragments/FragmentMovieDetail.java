@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.android.material_design.Adapters.MovieDetailAdapter;
+import com.example.android.material_design.Adapters.MovieDetailAdapter2;
+import com.example.android.material_design.Adapters.MovieDetailAdapter3;
 import com.example.android.material_design.Database.DataSource;
 import com.example.android.material_design.Database.DbHelper;
 import com.example.android.material_design.Movie;
@@ -99,7 +102,8 @@ ImageView image;
     public ViewPager viewPager;
     String titleStr="";
     int minutes=0;
-    TextView movieName;
+//    TextView movieName;
+    private TextView movieName, movieTagLine, movieReleaseDate, movieDuration, movieGenre, moviePopularity, movieSynopsis, movieRating, movieLanguage;
     String popularity="";
     Movie movieInfo;
     String movieVideosInfo;
@@ -109,6 +113,7 @@ ImageView image;
     private Activity activity;
     ImageView movieImage;
     FloatingActionButton fab;
+    RecyclerView recyclerView;
     ImageView back;
 //    ThumbUpView mThumbUpView;
     private ArrayList<String> mTrailerInfo = new ArrayList<>();
@@ -120,7 +125,13 @@ ImageView image;
 movieName= (TextView) view.findViewById(R.id.movieName);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_movie_detail);
         mLayoutManager = new LinearLayoutManager(activity);
+
         mRecyclerView.setLayoutManager(mLayoutManager);
+        recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView_movie_detail2);
+
+        mLayoutManager = new LinearLayoutManager(activity);
+
+        recyclerView.setLayoutManager(mLayoutManager);
         //    fragmentManager = getSupportFragmentManager();//
 movie= new Movie();
         volleySingleton = VolleySingleton.getInstance();
@@ -168,11 +179,11 @@ movie= new Movie();
                 .attachTo(fab)
                 .build();
 
-        sendjsonRequest(movieID);
+        //sendjsonRequest(movieID);
 
         itemIcon1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sendjsonRequestVideos(movieID);
+              sendjsonRequestVideos(movieID);
 
             }
         });
@@ -201,6 +212,17 @@ movie= new Movie();
         mThumbUpView.Like();
         mThumbUpView.UnLike();
         */
+        //movieImage = (ImageView) view.findViewById(R.id.movieImage);
+        movieName = (TextView) view.findViewById(R.id.tvMovieTitle);
+        movieTagLine = (TextView) view.findViewById(R.id.tvMovieTagLine);
+        movieReleaseDate = (TextView)view.findViewById(R.id.tvMovieReleaseDate);
+        movieDuration = (TextView) view.findViewById(R.id.tvMovieDuration);
+        movieGenre = (TextView) view.findViewById(R.id.tvMovieGenre);
+        moviePopularity = (TextView) view.findViewById(R.id.tvMoviePopularity);
+        movieRating = (TextView) view.findViewById(R.id.tvMovieRating);
+        movieSynopsis = (TextView) view.findViewById(R.id.tvMovieSynopsis);
+        movieLanguage = (TextView) view.findViewById(R.id.tvMovieLanguage);
+        sendjsonRequest(movieID);
         return view;
     }
 
@@ -231,7 +253,7 @@ movie= new Movie();
                 t.commit();
                 */
 
-                mAdapter.notifyDataSetChanged();
+           //     mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);
                 //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
@@ -323,6 +345,23 @@ movieName.setText(titleStr);
                 movie.setGenre(genres);       //tvGenre.setText(genres);
 
                 movie.setRating(Float.parseFloat(vote_average));
+                if (!movie.getTagLine().equals("")) {
+                    movieTagLine.setText("\" " + movie.getTagLine() + " \"");
+                } else if (movie.getTagLine().equals("")) {
+                    movieTagLine.setVisibility(View.GONE);
+                }
+                movieReleaseDate.setText(movie.getReleasedate());//+ "(" + movie.getStatus() + ")");
+
+             //   int durationInMin = movie.getDuration();
+               // int hours = durationInMin / 60;
+                movieDuration.setText("Duration: " + hours + " hr " + minutes + " min");
+
+                movieGenre.setText("Genre: " + movie.getGenre());
+                //  ((MovieDetailViewHolder) holder).movieLanguage.setText(String.format("Language: " + movie.getLanguage()));
+                moviePopularity.setText(String.format("%.1f", movie.getPopularity()) + "");
+                movieRating.setText(String.format((movie.getRating()) + ""));
+                movieSynopsis.setText(movie.getOverview());
+                //movie.setLanguage(language);
             } catch (JSONException e){}
 
         /*    title.setText(titleStr);
@@ -336,7 +375,6 @@ movieName.setText(titleStr);
 */
 
 
-            //movie.setLanguage(language);
         }
 
 
@@ -358,9 +396,11 @@ movieName.setText(titleStr);
             @Override
             public void onResponse(JSONObject response) {
                 mTrailerInfo = parseJsonResponseVidedos(response);
-
-              mAdapter = new MovieDetailAdapter(movieInfo,mTrailerInfo,getActivity());
+                recyclerView.setAlpha(0);
+                mRecyclerView.setAlpha(1);
+              mAdapter = new MovieDetailAdapter2(mTrailerInfo,getActivity());
                 mRecyclerView.setAdapter(mAdapter);
+                //Toast.makeText(getActivity(),"the toast", Toast.LENGTH_SHORT).show();
                 mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);
@@ -411,9 +451,10 @@ movieName.setText(titleStr);
             @Override
             public void onResponse(JSONObject response) {
                 mReviewInfo = parseJsonResponseReviews(response);
-
-                mAdapter = new MovieDetailAdapter(movieInfo,mReviewInfo,getActivity(),1);
-                mRecyclerView.setAdapter(mAdapter);
+mRecyclerView.setAlpha(0);
+                recyclerView.setAlpha(1);
+              mAdapter = new MovieDetailAdapter3(mReviewInfo,getActivity());
+                recyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);
