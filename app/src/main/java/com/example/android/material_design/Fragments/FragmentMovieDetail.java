@@ -563,7 +563,7 @@ mRecyclerView.setAlpha(0);
 
             super(fm);
             tabText= getResources().getStringArray(R.array.tabs);
-            //Fragment   fragment=FragmentSearch.newInstance("", "");
+
         }
 
 
