@@ -180,13 +180,14 @@ public AdapterBoxOffice adapterBoxOffice;
 
                 //appending all the movies which we are getiing one by one
                 Movie movie = new Movie();
-                movie.setStringid(sId);
+               /* movie.setStringid(sId);
                 movie.setId(id);
                 movie.setTitle(title);
                 movie.setUrlSelf(image_whole_Url);
                 movie.setReleaseDateTheater(release_date);
                 movie.setOverview(overview);
                 movie.setUrlThumbnail(image_whole_Url);
+               */
                 listMovies.add(movie);
             } if(pageCount<pages) {
                 pageCount++;
@@ -250,9 +251,9 @@ public AdapterBoxOffice adapterBoxOffice;
         i.putExtra("title", movie.getTitle());
         i.putExtra("overview", movie.getOverview());
         i.putExtra("releaseDate", movie.getReleaseDateTheater());
-        i.putExtra("Image", movie.getUrlThumbnail());
+       // i.putExtra("Image", movie.getUrlThumbnail());
         i.putExtra("favourite",false);
-        i.putExtra("id",movie.getId());
+        //i.putExtra("id",movie.getId());
 
         startActivity(i);
 

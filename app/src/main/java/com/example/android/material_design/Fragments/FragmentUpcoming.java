@@ -174,12 +174,7 @@ public long dbId;
                     //appending all the movies which we are getiing one by one
                     Movie movie = new Movie();
                     movie.setStringid(sId);
-                    movie.setId(id);
-                    movie.setTitle(title);
-                    movie.setUrlSelf(image_whole_Url);
-                    movie.setReleaseDateTheater(release_date);
-                    movie.setOverview(overview);
-                    movie.setUrlThumbnail(image_whole_Url);
+movie.setUrlSelf(image_whole_Url);
                     listMovies.add(movie);
                 }
             if(pageCount<pages) {
@@ -246,13 +241,8 @@ public long dbId;
 
         Movie movie=this.listMovies.get(position);
             i.putExtra("stringId",movie.getStringid());
-            i.putExtra("id",movie.getId());
-        i.putExtra("title", movie.getTitle());
-        i.putExtra("overview", movie.getOverview());
-        i.putExtra("releaseDate", movie.getReleaseDateTheater());
-        i.putExtra("Image",movie.getUrlThumbnail());
-        i.putExtra("favourite",false);
-
+            i.putExtra("urlSelf",movie.getUrlSelf());
+            i.putExtra("fragment","toprated");
 
         startActivity(i);
 

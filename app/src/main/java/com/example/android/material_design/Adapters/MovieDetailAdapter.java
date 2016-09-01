@@ -118,15 +118,14 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
                 ((MovieDetailViewHolder) holder).movieReleaseDate.setText(movie.getReleasedate());//+ "(" + movie.getStatus() + ")");
 
-                int durationInMin = movie.getDuration();
-                int hours = durationInMin / 60;
-                int minutes = durationInMin % 60;
-                ((MovieDetailViewHolder) holder).movieDuration.setText("Duration: " + hours + " hr " + minutes + " min");
+                String durationInMin = movie.getDuration();
+
+                ((MovieDetailViewHolder) holder).movieDuration.setText(durationInMin);
 
                 ((MovieDetailViewHolder) holder).movieGenre.setText("Genre: " + movie.getGenre());
                 //  ((MovieDetailViewHolder) holder).movieLanguage.setText(String.format("Language: " + movie.getLanguage()));
                 ((MovieDetailViewHolder) holder).moviePopularity.setText(String.format("%.1f", movie.getPopularity()) + "");
-                ((MovieDetailViewHolder) holder).movieRating.setText(String.format((movie.getRating()) + ""));
+                ((MovieDetailViewHolder) holder).movieRating.setText(String.format((movie.getAudienceScore()) + ""));
                 ((MovieDetailViewHolder) holder).movieSynopsis.setText(movie.getOverview());
 
                 break;

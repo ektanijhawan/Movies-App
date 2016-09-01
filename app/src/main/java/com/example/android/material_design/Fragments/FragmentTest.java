@@ -40,7 +40,7 @@ public class FragmentTest extends Fragment implements AdapterFavourite.ClickList
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    int id;
+    String id;
     DbHelper dbHelper;
     ArrayList<Movie> movieFromDatabase;
     public FragmentTest() {
@@ -111,20 +111,34 @@ getMovies();
     public void itemClicked(View view, int position) {
          Intent i = new Intent(getActivity(),DeatilBoxOfficeActivity.class);
         Movie currentMovie = listMovies.get(position);
-        id=currentMovie.getId();
+        id=currentMovie.getStringid();
         Movie movie;
         movie=dbHelper.getMovieFromDatabase(id);
        String title= movie.getTitle();
-        String overview= movie.getOverview();
+
+
+String urlSelf=movie.getUrlSelf();
+        String coverImage=movie.getCoverImage();
+        String audienceScore=movie.getAudienceScore();
+        String popularity=movie.getPopularity();
+        String tagLine=movie.getTagLine();
         String releaseDate=movie.getReleaseDateTheater();
-String url=movie.getUrlSelf();
+        String duration=movie.getDuration();
+        String genre=movie.getGenre();
+        String overview= movie.getOverview();
 
         i.putExtra("id",id);
-        i.putExtra("title",title);
-        i.putExtra("overview",overview);
+        i.putExtra("title", title);
+        i.putExtra("coverImage", coverImage);
+        i.putExtra("urlSelf", urlSelf);
+        i.putExtra("audienceScore", audienceScore);
+        i.putExtra("popularity", popularity);
+        i.putExtra("tagLine", tagLine);
         i.putExtra("releaseDate", releaseDate);
-        i.putExtra("Image", url);
-        i.putExtra("favourite",true);
+        i.putExtra("duration", duration);
+        i.putExtra("genre",genre);
+        i.putExtra("overview",overview);
+        i.putExtra("fragment","favourite");
         startActivity(i);
 
 

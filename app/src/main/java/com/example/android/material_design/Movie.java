@@ -7,76 +7,47 @@ import java.util.Date;
 
 
 public class Movie  {
-
-    private int id;
-    private long dbId;
-    public String title;
-    private String releaseDateTheater;
-    private int audienceScore;
-    private String overview;
-    private String urlThumbnail;
+    private int dbId;
+    private String id;
+    String title;
     private String urlSelf;
-    private String urlCast;
-    private String urlReviews;
-    private String urlSimilar;
-    private String tagLine;
-    private String status;
-    private String genre;
-    private String image;
     private String coverImage;
-    int duration;
-    float popularity;
-    String stringid;
-    float rating;
-    String language;
+    String audienceScore;
+    String popularity;
+    private String tagLine;
+    private String releaseDateTheater;
+    String duration;
+    private String genre;
+    private String overview;
+
+
+
+
+
 
 
     public Movie() {
 
     }
-public Movie(int id)
-{
-    this.id=id;
-}
-    public Movie(int id,String title,String overview,String releaseDateTheater,String urlSelf)
+
+    public Movie(String id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
     {
         this.id=id;
         this.title=title;
-        this.overview=overview;
-        this.releaseDateTheater=releaseDateTheater;
         this.urlSelf=urlSelf;
-    }
+        this.coverImage=coverImage;
+        this.tagLine=tagLine;
+        this.audienceScore=audienceScore;
+        this.popularity=popularity;
+        this.tagLine=tagLine;
+        this.releaseDateTheater=releaseDate;
+        this.duration=duration;
+        this.genre=genre;
+        this.overview=overview;
 
 
-    public Movie(int id,
-                 String title,
-                 String releaseDateTheater,
-                 int audienceScore,
-                 String overview,
-                 String urlThumbnail,
-                 String urlSelf,
-                 String urlCast,
-                 String urlReviews,
-                 String urlSimilar) {
-        this.id = id;
-        this.title = title;
-        this.releaseDateTheater = releaseDateTheater;
-        this.audienceScore = audienceScore;
-        this.overview = overview;
-        this.urlThumbnail = urlThumbnail;
-        this.urlSelf = urlSelf;
-        this.urlCast = urlCast;
-        this.urlReviews = urlReviews;
-        this.urlSimilar = urlSimilar;
     }
 
-    public int getId() {
-       return id;
-   }
-//
-   public void setId(int id) {
-       this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -94,36 +65,18 @@ public Movie(int id)
 
     public String getOverview(){  return overview;}
 
-  //  public int getAudienceScore() {
-   //     return audienceScore;
-   // }
-
-   // public void setAudienceScore(int audienceScore) {
-   //     this.audienceScore = audienceScore;
-   // }
-
-   // public String getSynopsis() {
-  //      return synopsis;
-   // }
-
-   // public void setSynopsis(String synopsis) {
-   //     this.synopsis = synopsis;
-   //
-
-    public long getDbId() {
-        return dbId;
+    public String getAudienceScore() {
+        return audienceScore;
     }
 
-    public void setDbId(long id) {
-        this.dbId = id;
+    public void setAudienceScore(String audienceScore) {
+       this.audienceScore = audienceScore;
     }
-    public String getUrlThumbnail() {
-    return urlThumbnail;
-}
 
-   public void setUrlThumbnail(String urlThumbnail) {
-       this.urlThumbnail = urlThumbnail;
-    }
+
+
+
+
 
     public String getUrlSelf() {
        return urlSelf;
@@ -139,12 +92,6 @@ public Movie(int id)
         return tagLine;
     }
 
-    public void setStatus(String status){
-        this.status = status;
-    }
-    public String getStatus(){
-        return status;
-    }
 
     public void setReleasedate(String releaseDate){
         this.releaseDateTheater = releaseDate;
@@ -161,10 +108,10 @@ public Movie(int id)
     }
 
     public void setImage(String image){
-        this.image = image;
+        this.urlSelf = urlSelf;
     }
     public String getImage(){
-        return image;
+        return urlSelf;
     }
 
     public void setCoverImage(String coverImage){
@@ -174,66 +121,31 @@ public Movie(int id)
         return coverImage;
     }
 
-    public void setDuration(int duration){
+    public void setDuration(String duration){
         this.duration = duration;
     }
-    public int getDuration(){
+    public String getDuration(){
         return duration;
     }
 
-    public void setPopularity(float popularity){
+    public void setPopularity(String popularity){
         this.popularity = popularity;
     }
-    public float getPopularity(){
+    public String getPopularity(){
         return popularity;
     }
 
 
 
-    public void setRating(float rating){
-        this.rating = rating;
-    }
-    public float getRating(){
-        return rating;
-    }
+
     public void setStringid(String id){
-        stringid=id;
+        this.id=id;
     }
     public String getStringid(){
-        return stringid;
-    }
-
-    public void setLanguage(String language){
-        this.language = language;
-    }
-    public String getLanguage(){
-        return language;
+        return id;
     }
 
 
-    // public String getUrlCast() {
-       // return urlCast;
-    //}
-//
- //   public void setUrlCast(String urlCast) {
-  //      this.urlCast = urlCast;
-  //  }
-
-    public String getUrlReviews() {
-       return urlReviews;
-    }
-
-    public void setUrlReviews(String urlReviews) {
-      this.urlReviews = urlReviews;
-    }
-
- //   public String getUrlSimilar() {
-//        return urlSimilar;
- //   }
-
- ///   public void setUrlSimilar(String urlSimilar) {
-  //      this.urlSimilar = urlSimilar;
- //   }
 
     @Override
     public String toString() {
@@ -242,11 +154,8 @@ public Movie(int id)
                 "\nDate " + releaseDateTheater +
                 "\nSynopsis " +overview +
                 "\nScore " + audienceScore +
-                "\nurlThumbnail " + urlThumbnail +
-                "\nurlSelf " + urlSelf +
-                "\nurlCast " + urlCast +
-                "\nurlReviews " + urlReviews +
-                "\nurlSimilar " + urlSimilar +
+
+
                 "\n";
     }
 

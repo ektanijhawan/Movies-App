@@ -48,7 +48,7 @@ Cursor cursor;
         cursor.close();
         return newMovie;
     }
-*/
+
 
     public void deleteComment(Movie movie) {
         long id = movie.getDbId();
@@ -60,7 +60,7 @@ Cursor cursor;
 
 
 
-
+*/
 
 
  /*  public ArrayList<Movie> getAllCotacts()

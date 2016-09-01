@@ -18,6 +18,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.RecursiveTask;
+
 import android.database.DatabaseUtils;
 import android.widget.Toast;
 
@@ -29,38 +31,55 @@ import com.example.android.material_design.Movie;
 public class DbHelper extends SQLiteOpenHelper {
     Cursor cursor;
 
-    private static final int DATABASE_VERSION = 6;
-    public static final String TABLE_MOVIES = "moviestable";
+    private static final int DATABASE_VERSION = 11;
+    public static final String TABLE_MOVIES = "moviesTable";
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_COMMENT = "comment";
+
 
     private static final String DATABASE_NAME = "movies.db";
 
-    public static final  String id="movieId";
+    public static final  String ID="movieId";
     public static final String  TITLE  ="title";
-    public static final String   RELEASEDATE=   "releaseDateTheater";
-    public static final String AUDIENCESCORE ="audienceScore";
-    public static final String OVERVIEW = "overview";
-    public static final String URLTHUMNAIL ="urlThumbnail";
     public static final String URLSELF ="urlSelf";
-    public static final String URLCASST ="urlCast";
-    public static final String URLREVIEWS ="urlReviews";
-    public static final String URLSIMILAR ="urlSimilar";
+    public static final String COVERIMAGE="coverimage";
+    public static final String AUDIENCESCORE ="audienceScore";
+    public static final String POPULARITY="popularity";
+    public static final String   RELEASEDATE=   "releaseDateTheater";
+    public static final String OVERVIEW = "overview";
+    public static final String TAGLINE ="tagline";
+    public static final String DURATION="duration";
+    public static final String GENRE="genre";
+
+
+
 
     SQLiteDatabase db;
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             +TABLE_MOVIES + "( " +COLUMN_ID
             + " integer primary key ,"
-            + "title"
-            +  " text not null,"
-            +OVERVIEW
-            +  " text not null,"
-
-            +RELEASEDATE
-            + " text not null,"
+            +ID
+            + " text ,"
+            + TITLE
+            +  " text ,"
             +URLSELF
-            +  " text not null);";
+            +  " text ,"
+            +COVERIMAGE
+            + " text ,"
+            +AUDIENCESCORE
+            + " text ,"
+            +POPULARITY
+            + " text ,"
+            +TAGLINE
+            + " text ,"
+            +RELEASEDATE
+            + " text ,"
+            +DURATION
+            + " text ,"
+            +GENRE
+            + " text ,"
+            +OVERVIEW
+            +  " text);";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -96,17 +115,23 @@ public class DbHelper extends SQLiteOpenHelper {
     }
     */
 
-   public boolean insertContact  (int id,String title,String overview,String releaseDate,String urlSelf)
+   public boolean insertInDatabase  (String id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
    {
 Boolean isInDb= isInDatabase(id);
        if(!isInDb) {
            db = this.getWritableDatabase();
            ContentValues contentValues = new ContentValues();
            contentValues.put(COLUMN_ID, id);
-           contentValues.put(RELEASEDATE, releaseDate);
-           contentValues.put(OVERVIEW, overview);
-           contentValues.put("title", title);
+           contentValues.put(TITLE, title);
            contentValues.put(URLSELF, urlSelf);
+           contentValues.put(COVERIMAGE, coverImage);
+           contentValues.put(AUDIENCESCORE, audienceScore);
+           contentValues.put(POPULARITY, popularity);
+           contentValues.put(TAGLINE, tagLine);
+           contentValues.put(RELEASEDATE, releaseDate);
+           contentValues.put(DURATION, duration);
+           contentValues.put(GENRE, genre);
+           contentValues.put(OVERVIEW, overview);
 
            Log.d("database", "inserted");
 
@@ -114,7 +139,7 @@ Boolean isInDb= isInDatabase(id);
        }
        return true;
    }
-    public boolean isInDatabase(int id)
+    public boolean isInDatabase(String id)
     {
         SQLiteDatabase     db= this.getReadableDatabase();
         Cursor c=  db.rawQuery( "select "+ COLUMN_ID+" from " + TABLE_MOVIES +" where " +COLUMN_ID +" = " + id , null );
@@ -141,17 +166,23 @@ SQLiteDatabase     db= this.getReadableDatabase();
             do{
 
                 Movie movie = new Movie(
-                        c.getInt(c.getColumnIndex(COLUMN_ID)),
-                      //  c.getString(c.getColumnIndex(IMAGE)),
+                        c.getString(c.getColumnIndex(ID)),
                         c.getString(c.getColumnIndex(TITLE)),
-                        c.getString(c.getColumnIndex(OVERVIEW)),
-//                        c.getString(c.getColumnIndex(TAGLINE)),
+
+                        c.getString(c.getColumnIndex(URLSELF)),
+
+                        c.getString(c.getColumnIndex(COVERIMAGE)),
+
+                        c.getString(c.getColumnIndex(AUDIENCESCORE)),
+                        c.getString(c.getColumnIndex(POPULARITY)),
+                        c.getString(c.getColumnIndex(TAGLINE)),
                         c.getString(c.getColumnIndex(RELEASEDATE)),
-                        c.getString(c.getColumnIndex(URLSELF))
-                       // c.getFloat(c.getColumnIndex(RATING))
-             //   movie.setDbId(Integer.parseInt(cursor.getLong(0)));
-               // movie.setTitle(cursor.getString(1));
-                //inventory.setItemQuant(Integer.parseInt(cursor.getString(2)));
+                        c.getString(c.getColumnIndex(DURATION)),
+                        c.getString(c.getColumnIndex(GENRE)),
+                        c.getString(c.getColumnIndex(OVERVIEW))
+
+
+
                 );
                 movies.add(movie);
             }while(c.moveToNext());
@@ -164,29 +195,30 @@ SQLiteDatabase     db= this.getReadableDatabase();
     }
 
 
-    public Movie getMovieFromDatabase(long id) {
+    public Movie getMovieFromDatabase(String id) {
         ArrayList<Movie> movies = new ArrayList<Movie>();
 Movie movie=new Movie();
         SQLiteDatabase     db= this.getReadableDatabase();
-        Cursor c=  db.rawQuery( "select * from " + TABLE_MOVIES +" where " +COLUMN_ID +" = " +id, null );
+        Cursor c=  db.rawQuery( "select * from " + TABLE_MOVIES +" where " +ID +" = " +id, null );
         c.moveToFirst();
-if(id== c.getLong(c.getColumnIndex(COLUMN_ID)))
+if(id.equals( c.getLong(c.getColumnIndex(ID))))
         {
             if (c.moveToFirst()) {
                 do {
 
                     movie = new Movie(
-                            c.getInt(c.getColumnIndex(COLUMN_ID)),
-                            //  c.getString(c.getColumnIndex(IMAGE)),
+                            c.getString(c.getColumnIndex(ID)),
                             c.getString(c.getColumnIndex(TITLE)),
-                            c.getString(c.getColumnIndex(OVERVIEW)),
-//                        c.getString(c.getColumnIndex(TAGLINE)),
+                              c.getString(c.getColumnIndex(URLSELF)),
+                            c.getString(c.getColumnIndex(COVERIMAGE)),
+                            c.getString(c.getColumnIndex(AUDIENCESCORE)),
+                        c.getString(c.getColumnIndex(POPULARITY)),
+                            c.getString(c.getColumnIndex(TAGLINE)),
                             c.getString(c.getColumnIndex(RELEASEDATE)),
-                            c.getString(c.getColumnIndex(URLSELF))
-                            // c.getFloat(c.getColumnIndex(RATING))
-                            //   movie.setDbId(Integer.parseInt(cursor.getLong(0)));
-                            // movie.setTitle(cursor.getString(1));
-                            //inventory.setItemQuant(Integer.parseInt(cursor.getString(2)));
+                             c.getString(c.getColumnIndex(DURATION)),
+                            c.getString(c.getColumnIndex(GENRE)),
+                            c.getString(c.getColumnIndex(OVERVIEW))
+
                     );
 
                 } while (c.moveToNext());
@@ -197,7 +229,7 @@ if(id== c.getLong(c.getColumnIndex(COLUMN_ID)))
       return movie;
 
     }
-    public  boolean isMovieInDatabase(Activity activity, int id){
+ /*   public  boolean isMovieInDatabase(Activity activity, int id){
 
         ArrayList<Movie> list = new ArrayList<Movie>();
         list= getAllComments();
@@ -221,5 +253,6 @@ if(id== c.getLong(c.getColumnIndex(COLUMN_ID)))
         //movie.getReleaseDateTheater();
         return movie;
     }
+    */
 
 }
