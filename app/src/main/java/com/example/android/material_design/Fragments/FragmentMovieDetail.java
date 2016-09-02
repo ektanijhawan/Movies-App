@@ -250,6 +250,7 @@ fab.setAlpha(1);
             moviePopularity.setText(favpopularity);
             movieRating.setText(favaudienceScore);
             movieSynopsis.setText(favoverview);
+         int a=  imageRequest(favcoverImage);
 
         }
         else if((fragmentValue.equals("popular"))||(fragmentValue.equals("toprated")))
@@ -259,7 +260,27 @@ fab.setAlpha(1);
     }
 
 
+int imageRequest(String imageString)
+{
 
+
+    if (imageString != null) {
+
+        imageLoader.get(imageString, new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                movieImage.setImageBitmap(response.getBitmap());
+            }
+        });
+
+    }
+    return 1;
+}
 
     public void sendjsonRequest(String id)
     {
@@ -346,8 +367,8 @@ fab.setAlpha(1);
                     else
                         genres += genre + ".";
                 }
-
-                if (imageString != null) {
+int a=imageRequest(imageString);
+          /*      if (imageString != null) {
 
                     imageLoader.get(imageString, new ImageLoader.ImageListener() {
                         @Override
@@ -362,6 +383,7 @@ fab.setAlpha(1);
                     });
 
                 }
+                */
 movieName.setText(titleStr);
                 movie.setStringid(movieID);
                 movie.setTitle(titleStr);

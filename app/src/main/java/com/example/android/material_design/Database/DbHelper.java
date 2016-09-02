@@ -31,7 +31,7 @@ import com.example.android.material_design.Movie;
 public class DbHelper extends SQLiteOpenHelper {
     Cursor cursor;
 
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 14;
     public static final String TABLE_MOVIES = "moviesTable";
     public static final String COLUMN_ID = "_id";
 
@@ -57,7 +57,7 @@ public class DbHelper extends SQLiteOpenHelper {
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             +TABLE_MOVIES + "( " +COLUMN_ID
-            + " integer primary key ,"
+            + " integer primary key AUTOINCREMENT,"
             +ID
             + " text ,"
             + TITLE
@@ -115,13 +115,13 @@ public class DbHelper extends SQLiteOpenHelper {
     }
     */
 
-   public boolean insertInDatabase  (String id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
+   public boolean insertInDatabase(String id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
    {
 Boolean isInDb= isInDatabase(id);
        if(!isInDb) {
            db = this.getWritableDatabase();
            ContentValues contentValues = new ContentValues();
-           contentValues.put(COLUMN_ID, id);
+           contentValues.put(ID, id);
            contentValues.put(TITLE, title);
            contentValues.put(URLSELF, urlSelf);
            contentValues.put(COVERIMAGE, coverImage);
@@ -142,7 +142,7 @@ Boolean isInDb= isInDatabase(id);
     public boolean isInDatabase(String id)
     {
         SQLiteDatabase     db= this.getReadableDatabase();
-        Cursor c=  db.rawQuery( "select "+ COLUMN_ID+" from " + TABLE_MOVIES +" where " +COLUMN_ID +" = " + id , null );
+        Cursor c=  db.rawQuery( "select "+ ID+" from " + TABLE_MOVIES +" where " +ID +" = " + id , null );
         c.moveToFirst();
         if(c.getCount() <= 0){
             c.close();
@@ -201,12 +201,12 @@ Movie movie=new Movie();
         SQLiteDatabase     db= this.getReadableDatabase();
         Cursor c=  db.rawQuery( "select * from " + TABLE_MOVIES +" where " +ID +" = " +id, null );
         c.moveToFirst();
-if(id.equals( c.getLong(c.getColumnIndex(ID))))
-        {
+
             if (c.moveToFirst()) {
                 do {
 
                     movie = new Movie(
+
                             c.getString(c.getColumnIndex(ID)),
                             c.getString(c.getColumnIndex(TITLE)),
                               c.getString(c.getColumnIndex(URLSELF)),
@@ -225,7 +225,7 @@ if(id.equals( c.getLong(c.getColumnIndex(ID))))
             }
             c.close();
 
-        }
+
       return movie;
 
     }
@@ -240,6 +240,7 @@ if(id.equals( c.getLong(c.getColumnIndex(ID))))
         }
         return false;
     }
+
     public Movie cursorToComment(Cursor cursor) {
         // Comment comment = new Comment();
         Movie movie= new Movie();
@@ -254,5 +255,6 @@ if(id.equals( c.getLong(c.getColumnIndex(ID))))
         return movie;
     }
     */
+
 
 }

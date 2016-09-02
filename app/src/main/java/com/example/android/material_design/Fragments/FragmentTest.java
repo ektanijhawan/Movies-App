@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.android.material_design.Adapters.AdapterFavourite;
 import com.example.android.material_design.Database.DataSource;
@@ -68,6 +69,7 @@ public class FragmentTest extends Fragment implements AdapterFavourite.ClickList
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
 
@@ -111,7 +113,10 @@ getMovies();
     public void itemClicked(View view, int position) {
          Intent i = new Intent(getActivity(),DeatilBoxOfficeActivity.class);
         Movie currentMovie = listMovies.get(position);
+        int id1=0;
         id=currentMovie.getStringid();
+        String name=currentMovie.getTitle();
+        Toast.makeText(getActivity(),"position is "+name,Toast.LENGTH_SHORT).show();
         Movie movie;
         movie=dbHelper.getMovieFromDatabase(id);
        String title= movie.getTitle();
