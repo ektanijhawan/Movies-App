@@ -28,6 +28,11 @@
             android:name=".Activities.DeatilBoxOfficeActivity"
             android:label="Description"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <provider
+            android:name="com.example.android.material_design.Utility.MovieProvider"
+            android:authorities="com.example.android.material_design">
+        </provider>
     </application>
 
 </manifest>

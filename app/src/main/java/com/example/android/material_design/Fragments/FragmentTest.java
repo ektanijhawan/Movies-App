@@ -16,7 +16,7 @@ import com.example.android.material_design.Database.DataSource;
 import com.example.android.material_design.Database.DbHelper;
 import com.example.android.material_design.Activities.DeatilBoxOfficeActivity;
 import com.example.android.material_design.EndlessRecyclerOnScrollListener;
-import com.example.android.material_design.Movie;
+import com.example.android.material_design.Model.Movie;
 import com.example.android.material_design.R;
 
 import java.util.ArrayList;
@@ -177,6 +177,14 @@ String urlSelf=movie.getUrlSelf();
         // for(Movie movie : list){
         //      movieList.add(movie);
         //}
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMovies();
+        adapterFavourite.notifyDataSetChanged();
     }
 }
 

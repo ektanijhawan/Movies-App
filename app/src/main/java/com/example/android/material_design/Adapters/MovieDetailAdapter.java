@@ -1,7 +1,6 @@
 package com.example.android.material_design.Adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.example.android.material_design.Movie;
+import com.example.android.material_design.Model.Movie;
 import com.example.android.material_design.R;
 import com.example.android.material_design.VolleySingleton;
 

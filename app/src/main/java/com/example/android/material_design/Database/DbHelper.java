@@ -1,6 +1,5 @@
 package com.example.android.material_design.Database;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,22 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.RecursiveTask;
 
-import android.database.DatabaseUtils;
-import android.widget.Toast;
-
-import com.example.android.material_design.Movie;
+import com.example.android.material_design.Model.Movie;
 
 /**
  * Created by Ekta on 01-07-2016.
@@ -56,10 +41,9 @@ public class DbHelper extends SQLiteOpenHelper {
     SQLiteDatabase db;
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
-            +TABLE_MOVIES + "( " +COLUMN_ID
-            + " integer primary key AUTOINCREMENT,"
+            +TABLE_MOVIES + "( "
             +ID
-            + " text ,"
+            + " integer primary key ,"
             + TITLE
             +  " text ,"
             +URLSELF
@@ -115,7 +99,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
     */
 
-   public boolean insertInDatabase(String id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
+   public boolean insertInDatabase(int id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
    {
 Boolean isInDb= isInDatabase(id);
        if(!isInDb) {
@@ -139,7 +123,7 @@ Boolean isInDb= isInDatabase(id);
        }
        return true;
    }
-    public boolean isInDatabase(String id)
+    public boolean isInDatabase(int id)
     {
         SQLiteDatabase     db= this.getReadableDatabase();
         Cursor c=  db.rawQuery( "select "+ ID+" from " + TABLE_MOVIES +" where " +ID +" = " + id , null );
@@ -166,7 +150,7 @@ SQLiteDatabase     db= this.getReadableDatabase();
             do{
 
                 Movie movie = new Movie(
-                        c.getString(c.getColumnIndex(ID)),
+                        c.getInt(c.getColumnIndex(ID)),
                         c.getString(c.getColumnIndex(TITLE)),
 
                         c.getString(c.getColumnIndex(URLSELF)),
@@ -207,15 +191,15 @@ Movie movie=new Movie();
 
                     movie = new Movie(
 
-                            c.getString(c.getColumnIndex(ID)),
+                            c.getInt(c.getColumnIndex(ID)),
                             c.getString(c.getColumnIndex(TITLE)),
-                              c.getString(c.getColumnIndex(URLSELF)),
+                            c.getString(c.getColumnIndex(URLSELF)),
                             c.getString(c.getColumnIndex(COVERIMAGE)),
                             c.getString(c.getColumnIndex(AUDIENCESCORE)),
-                        c.getString(c.getColumnIndex(POPULARITY)),
+                            c.getString(c.getColumnIndex(POPULARITY)),
                             c.getString(c.getColumnIndex(TAGLINE)),
                             c.getString(c.getColumnIndex(RELEASEDATE)),
-                             c.getString(c.getColumnIndex(DURATION)),
+                            c.getString(c.getColumnIndex(DURATION)),
                             c.getString(c.getColumnIndex(GENRE)),
                             c.getString(c.getColumnIndex(OVERVIEW))
 

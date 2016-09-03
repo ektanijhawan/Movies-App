@@ -5,8 +5,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.android.material_design.Movie;
-
 /**
  * Created by Ekta on 01-07-2016.
  */

@@ -1,4 +1,4 @@
-package com.example.android.material_design;
+package com.example.android.material_design.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Movie  {
     private int dbId;
-    private String id;
+    private int id;
     String title;
     private String urlSelf;
     private String coverImage;
@@ -30,7 +30,7 @@ public class Movie  {
 
     }
 
-    public Movie(String id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
+    public Movie(int id,String title,String urlSelf,String coverImage,String audienceScore,String popularity,String tagLine,String releaseDate,String duration,String genre,String overview)
     {
         this.id=id;
         this.title=title;
@@ -139,10 +139,10 @@ public class Movie  {
 
 
     public void setStringid(String id){
-        this.id=id;
+        this.id=Integer.parseInt(id);
     }
     public String getStringid(){
-        return id;
+        return String.valueOf(id);
     }
 
 

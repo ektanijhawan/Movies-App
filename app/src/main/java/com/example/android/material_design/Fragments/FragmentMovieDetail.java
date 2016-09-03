@@ -3,7 +3,6 @@ package com.example.android.material_design.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,12 +26,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.android.material_design.Adapters.MovieDetailAdapter;
 import com.example.android.material_design.Adapters.MovieDetailAdapter2;
 import com.example.android.material_design.Adapters.MovieDetailAdapter3;
 import com.example.android.material_design.Database.DataSource;
 import com.example.android.material_design.Database.DbHelper;
-import com.example.android.material_design.Movie;
+import com.example.android.material_design.Model.Movie;
 import com.example.android.material_design.R;
 import com.example.android.material_design.VolleySingleton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
@@ -424,7 +421,7 @@ movieName.setText(titleStr);
                 itemIcon3.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         DbHelper dbHelper= new DbHelper(getActivity());
-                        dbHelper.insertInDatabase(movieID,titleStr,urlSelf,imageString,vote_average,popularity,tagline,releaseDateString,DurationString,genres,overview);
+                        dbHelper.insertInDatabase(Integer.parseInt(movieID),titleStr,urlSelf,imageString,vote_average,popularity,tagline,releaseDateString,DurationString,genres,overview);
 
 
                     }

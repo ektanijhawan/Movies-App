@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.example.android.material_design.Movie;
+import com.example.android.material_design.Model.Movie;
 import com.example.android.material_design.R;
 import com.example.android.material_design.VolleySingleton;
 

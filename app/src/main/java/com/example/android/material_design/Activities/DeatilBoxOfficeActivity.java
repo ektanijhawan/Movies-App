@@ -1,38 +1,13 @@
 package com.example.android.material_design.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.android.material_design.Database.DataSource;
-import com.example.android.material_design.Database.DbHelper;
 import com.example.android.material_design.Fragments.FragmentMovieDetail;
-import com.example.android.material_design.Movie;
 import com.example.android.material_design.R;
-import com.example.android.material_design.VolleySingleton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 
 public class DeatilBoxOfficeActivity extends AppCompatActivity {

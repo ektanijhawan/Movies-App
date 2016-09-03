@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.android.material_design.Adapters.AdapterBoxOffice;
 import com.example.android.material_design.Activities.DeatilBoxOfficeActivity;
 import com.example.android.material_design.EndlessRecyclerOnScrollListener;
-import com.example.android.material_design.Movie;
+import com.example.android.material_design.Model.Movie;
 import com.example.android.material_design.R;
 import com.example.android.material_design.VolleySingleton;
 

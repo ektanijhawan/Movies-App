@@ -44,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     class MyViewHolder extends  RecyclerView.ViewHolder{
-  TextView title ;
+ public TextView title ;
         ImageView icon;
         public MyViewHolder(View itemView) {
             super(itemView);
