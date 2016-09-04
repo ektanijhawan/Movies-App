@@ -527,8 +527,7 @@ mRecyclerView.setAlpha(0);
                 recyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
 
-                //adapterBoxOffice.setMovieList(listMovies);
-                //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
