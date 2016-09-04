@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class MovieDetailAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
 
-
+    String coverImage;
 
 
     private Movie movie;

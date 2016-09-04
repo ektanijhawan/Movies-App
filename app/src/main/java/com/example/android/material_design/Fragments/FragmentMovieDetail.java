@@ -55,7 +55,7 @@ public class FragmentMovieDetail extends Fragment implements MaterialTabListener
     public ImageLoader imageLoader;
     public VolleySingleton volleySingleton;
    // String imageString;
-    String share;
+
     String titleString;
     String releaseDateString;
     String overviewString;
@@ -84,7 +84,7 @@ String urlSelf;
     //ImageView image;
     TextView tvDuration;
     String imagePostUrl="";
-
+    ImageView itemIcon2;
     String movieID;
     String fragmentValue;
 ImageView image;
@@ -107,6 +107,7 @@ ImageView image;
     String popularity="";
     ImageView itemIcon3;
     Movie movieInfo;
+    ImageView itemIcon1;
     String DurationString;
     String movieVideosInfo;
     RecyclerView mRecyclerView;
@@ -117,6 +118,7 @@ ImageView image;
     FloatingActionButton fab;
     RecyclerView recyclerView;
     ImageView back;
+    ImageView trailers,reviews;
 //    ThumbUpView mThumbUpView;
     private ArrayList<String> mTrailerInfo = new ArrayList<>();
     private ArrayList<String> mReviewInfo = new ArrayList<>();
@@ -141,6 +143,8 @@ movie= new Movie();
         movieImage = (ImageView) view.findViewById(R.id.ivMovieImage);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         back = (ImageView) view.findViewById(R.id.ivBack);
+       trailers= (ImageView) view.findViewById(R.id.ivTrailer);
+        reviews= (ImageView) view.findViewById(R.id.ivReviews);
         imageLoader = volleySingleton.getmImageLoader();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +166,7 @@ favtitle=getArguments().getString("title");
                                   favreleaseDate=getArguments().getString("releaseDate");
                                           favduration=getArguments().getString("duration");
                                                   favgenre=getArguments().getString("genre");
-                                                          favoverview=getArguments().getString("verview");
+                                                          favoverview=getArguments().getString("overview");
 
 
 }
@@ -170,43 +174,43 @@ favtitle=getArguments().getString("title");
 fab.setAlpha(1);
 //mThumbUpView= (ThumbUpView) view.findViewById(R.id.tpv);
         ImageView icon = new ImageView(getActivity());
-        icon.setImageResource(R.mipmap.ic_launcher);
+        icon.setImageResource(R.drawable.next);
 
      //   FloatingActionButton actionButton = new FloatingActionButton.Builder(getActivity())
        //         .setContentView(icon)
          //       .build();
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
         // repeat many times:
-        ImageView itemIcon1 = new ImageView(getActivity());
-        itemIcon1.setImageResource(R.mipmap.ic_launcher);
+         itemIcon1 = new ImageView(getActivity());
+        itemIcon1.setImageResource(R.drawable.like_hollow_heart);
 
-        ImageView itemIcon2 = new ImageView(getActivity());
-        itemIcon2.setImageResource(R.mipmap.ic_launcher);
+         itemIcon2 = new ImageView(getActivity());
+        itemIcon2.setImageResource(R.drawable.share);
 
          itemIcon3 = new ImageView(getActivity());
         itemIcon3.setImageResource(R.mipmap.ic_launcher);
 
         SubActionButton button1 = itemBuilder.setContentView(itemIcon1).build();
         SubActionButton button2 = itemBuilder.setContentView(itemIcon2).build();
-         button3 = itemBuilder.setContentView(itemIcon3).build();
+         //button3 = itemBuilder.setContentView(itemIcon3).build();
 
         //attach the sub buttons to the main button
         actionMenu = new FloatingActionMenu.Builder(getActivity())
                 .addSubActionView(button1)
                 .addSubActionView(button2)
-                .addSubActionView(button3)
+              //  .addSubActionView(button3)
                 .attachTo(fab)
                 .build();
 
         //sendjsonRequest(movieID);
 
-        itemIcon1.setOnClickListener(new View.OnClickListener() {
+        trailers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
               sendjsonRequestVideos(movieID);
 
             }
         });
-        itemIcon2.setOnClickListener(new View.OnClickListener() {
+        reviews.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendJsonRequestReviews(movieID);
             }
@@ -237,6 +241,7 @@ fab.setAlpha(1);
         movieRating = (TextView) view.findViewById(R.id.tvMovieRating);
         movieSynopsis = (TextView) view.findViewById(R.id.tvMovieSynopsis);
         movieLanguage = (TextView) view.findViewById(R.id.tvMovieLanguage);
+
 
        if(fragmentValue.equals("favourite")){
             movieName.setText(favtitle);
@@ -418,7 +423,7 @@ movieName.setText(titleStr);
                 movieRating.setText(String.format((movie.getAudienceScore()) + ""));
                 movieSynopsis.setText(movie.getOverview());
                 //movie.setLanguage(language);
-                itemIcon3.setOnClickListener(new View.OnClickListener() {
+                itemIcon1.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         DbHelper dbHelper= new DbHelper(getActivity());
                         dbHelper.insertInDatabase(Integer.parseInt(movieID),titleStr,urlSelf,imageString,vote_average,popularity,tagline,releaseDateString,DurationString,genres,overview);
@@ -426,6 +431,15 @@ movieName.setText(titleStr);
 
                     }
                 });
+
+                itemIcon2.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                       createShareIntent();
+
+
+                    }
+                });
+
             } catch (JSONException e){}
 
 
@@ -484,6 +498,7 @@ movieName.setText(titleStr);
                 mTrailerInfo.add(mTrailerObject.getString("key") + "," + mTrailerObject.getString("name")
                         + "," + mTrailerObject.getString("site") + "," + mTrailerObject.getString("size")
                         + "," + mTrailerObject.getString("type"));
+
             }
 
 
@@ -545,7 +560,7 @@ mRecyclerView.setAlpha(0);
 
         return mTrailerInfo;
     }
-    protected void sendEmail() {
+  /*  protected void sendEmail() {
         Log.i("Send email", "");
         String[] TO = {""};
         String[] CC = {""};
@@ -568,14 +583,15 @@ mRecyclerView.setAlpha(0);
         //     Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
         // }
     }
+*/
+    private  void createShareIntent(){
 
-    private  Intent createShareIntent(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Text");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
 
-        Intent shareIntent= new Intent(Intent.ACTION_SEND);
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, share);
-        return shareIntent;
     }
 
     @Override

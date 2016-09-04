@@ -30,13 +30,14 @@ DbHelper dbHelper;
     static final int uriCode = 1;
     //static final UriMatcher uriMatcher;
     private static HashMap<String, String> values;
-    SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 
+    SQLiteDatabase db;
     @Override
     public boolean onCreate() {
         Context context = getContext();
-       dbHelper = new DbHelper(context);
+        dbHelper = new DbHelper(context);
+
         db = dbHelper.getWritableDatabase();
         if (db != null) {
             return true;
@@ -47,7 +48,7 @@ DbHelper dbHelper;
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-
+        db = dbHelper.getWritableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(dbHelper.TABLE_MOVIES);
 
@@ -70,6 +71,7 @@ DbHelper dbHelper;
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        db = dbHelper.getWritableDatabase();
         long rowID = db.insert(dbHelper.TABLE_MOVIES, "", values);
         if (rowID > 0) {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
@@ -82,7 +84,7 @@ DbHelper dbHelper;
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-
+        db = dbHelper.getWritableDatabase();
         int deleteCount = db.delete(dbHelper.TABLE_MOVIES, selection, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
         return deleteCount;
@@ -90,6 +92,7 @@ DbHelper dbHelper;
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        db = dbHelper.getWritableDatabase();
         int count = 0;
 
 

@@ -16,7 +16,7 @@ import com.example.android.material_design.Model.Movie;
 public class DbHelper extends SQLiteOpenHelper {
     Cursor cursor;
 
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 16;
     public static final String TABLE_MOVIES = "moviesTable";
     public static final String COLUMN_ID = "_id";
 
