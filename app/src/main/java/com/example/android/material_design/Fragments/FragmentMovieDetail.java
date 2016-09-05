@@ -118,7 +118,7 @@ ImageView image;
     RecyclerView mRecyclerView;
     FloatingActionMenu actionMenu; private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Activity activity;
+     Activity activity;
     ImageView movieImage;
     FloatingActionButton fab;
     RecyclerView recyclerView;
@@ -277,26 +277,14 @@ fab.setAlpha(1);
             itemIcon1.setImageResource(R.drawable.like_hollow_heart);
 
 
-        itemIcon1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-
-                if(!(dbHelper.isInDatabase(Integer.parseInt(movieID))))
-                {
-                    inDatabase = true;
-                    itemIcon1.setImageResource(R.drawable.like_filled_heart);
-                    dbHelper.insertInDatabase(Integer.parseInt(movieID), titleStr, urlSelf, imageString, vote_average, popularity, tagline, releaseDateString, DurationString, genres, overview);
-
-                }
-                else if((dbHelper.isInDatabase(Integer.parseInt(movieID)))){
-                    inDatabase = false;
-                    itemIcon1.setImageResource(R.drawable.like_hollow_heart);
-                  dbHelper.deleteMovie(movieID);
-
-                }
-            }
-        });
+   inDatabase(movieID);
         return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = activity;
     }
 
 
@@ -492,7 +480,7 @@ movieName.setText(titleStr);
     }
 
 
-    public int inDatabase(String movieID)
+    public int inDatabase(final String movieID)
     {
           final String id=movieID;
         dbHelper = new DbHelper(getActivity());
@@ -513,12 +501,14 @@ movieName.setText(titleStr);
                     dbHelper.insertInDatabase(Integer.parseInt(id), titleStr, urlSelf, imageString, vote_average, popularity, tagline, releaseDateString, DurationString, genres, overview);
 
                 }
-                else {
+                else if((dbHelper.isInDatabase(Integer.parseInt(id)))){
                     inDatabase = false;
                     itemIcon1.setImageResource(R.drawable.like_hollow_heart);
   //                  Uri contentUri = MovieProvider.CONTENT_URI;
 //                    activity.getContentResolver().delete(contentUri, "id=?", new String[]{id});
 
+                    Uri contentUri = MovieProvider.CONTENT_URI;
+                    activity.getContentResolver().delete(contentUri, dbHelper.ID+"=?", new String[]{id});
                 }
             }
         });
