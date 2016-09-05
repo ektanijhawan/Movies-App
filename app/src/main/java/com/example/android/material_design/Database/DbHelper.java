@@ -120,6 +120,7 @@ Boolean isInDb= isInDatabase(id);
            Log.d("database", "inserted");
 
            db.insert(TABLE_MOVIES, null, contentValues);
+          // activity.getContentResolver().insert(MoviesProvider.BASE_CONTENT_URI, values);
        }
        return true;
    }

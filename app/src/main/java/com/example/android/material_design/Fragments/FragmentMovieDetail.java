@@ -2,6 +2,7 @@ package com.example.android.material_design.Fragments;
 
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +58,19 @@ public class FragmentMovieDetail extends Fragment implements MaterialTabListener
     public ImageLoader imageLoader;
     public VolleySingleton volleySingleton;
    // String imageString;
+   private static final String DATABASE_NAME = "movies.db";
+
+    public static final  String ID="movieId";
+    public static final String  TITLE  ="title";
+    public static final String URLSELF ="urlSelf";
+    public static final String COVERIMAGE="coverimage";
+    public static final String AUDIENCESCORE ="audienceScore";
+    public static final String POPULARITY="popularity";
+    public static final String   RELEASEDATE=   "releaseDateTheater";
+    public static final String OVERVIEW = "overview";
+    public static final String TAGLINE ="tagline";
+    public static final String DURATION="duration";
+    public static final String GENRE="genre";
 
     String titleString;
     String releaseDateString;
@@ -498,7 +512,33 @@ movieName.setText(titleStr);
                 {
                     inDatabase = true;
                     itemIcon1.setImageResource(R.drawable.like_filled_heart);
-                    dbHelper.insertInDatabase(Integer.parseInt(id), titleStr, urlSelf, imageString, vote_average, popularity, tagline, releaseDateString, DurationString, genres, overview);
+                 //   dbHelper.insertInDatabase(Integer.parseInt(id), titleStr, urlSelf, imageString, vote_average, popularity, tagline, releaseDateString, DurationString, genres, overview);
+
+Log.v("hi","hi");
+                   // Boolean isInDb = dbHelper.isInDatabase(Integer.parseInt(movieID));
+                    //if (!isInDb) {
+
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(ID, Integer.parseInt(id));
+                        contentValues.put(TITLE, titleStr);
+                        contentValues.put(URLSELF, urlSelf);
+                        contentValues.put(COVERIMAGE, coverImage);
+                        contentValues.put(AUDIENCESCORE, vote_average);
+                        contentValues.put(POPULARITY, popularity);
+                        contentValues.put(TAGLINE, tagline);
+                        contentValues.put(RELEASEDATE, releaseDateString);
+                        contentValues.put(DURATION, DurationString);
+                        contentValues.put(GENRE, genres);
+                        contentValues.put(OVERVIEW, overview);
+
+
+                        //db.insert(TABLE_MOVIES, null, contentValues);
+                        activity.getContentResolver().insert(MovieProvider.CONTENT_URI, contentValues);
+
+                        Log.d("database", "inserted");
+
+                    //}
+
 
                 }
                 else if((dbHelper.isInDatabase(Integer.parseInt(id)))){
