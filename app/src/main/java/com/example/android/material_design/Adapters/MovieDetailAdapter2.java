@@ -87,7 +87,7 @@ public class MovieDetailAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewH
                 });
             }
 
-            ((TrailersViewHolder) holder).trailerTitle.setText("dataZero");
+            ((TrailersViewHolder) holder).trailerTitle.setText(data[1]);
             Log.v("tag", "message");
 
 

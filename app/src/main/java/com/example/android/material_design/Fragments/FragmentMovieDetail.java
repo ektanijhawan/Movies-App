@@ -26,12 +26,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.android.material_design.Adapters.MovieDetailAdapter2;
 import com.example.android.material_design.Adapters.MovieDetailAdapter3;
 import com.example.android.material_design.Database.DataSource;
 import com.example.android.material_design.Database.DbHelper;
 import com.example.android.material_design.Model.Movie;
 import com.example.android.material_design.R;
+import com.example.android.material_design.Utility.MovieProvider;
 import com.example.android.material_design.VolleySingleton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
@@ -63,6 +65,7 @@ public class FragmentMovieDetail extends Fragment implements MaterialTabListener
     private ArrayList<String> trailerInfo = new ArrayList<>();
     private ArrayList<String> reviewInfo = new ArrayList<>();
     int id;
+
     public RequestQueue requestQueue;
     private android.support.v7.widget.ShareActionProvider mShareActionProvider;
     Button button;
@@ -80,6 +83,7 @@ String urlSelf;
     //TextView title;
     TextView tvPopularity;
     TextView tvVote_average;
+    String data;
    // TextView tvGenre;
     //ImageView image;
     TextView tvDuration;
@@ -98,6 +102,7 @@ ImageView image;
     String favtitle, favurlSelf, favcoverImage, favaudienceScore, favpopularity,favtagLine, favreleaseDate,favduration, favgenre, favoverview;
     public ViewPager viewPager;
     String coverImage;
+    Boolean inDatabase=false;
     String releaseDate,overview;
     String titleStr="";
     int minutes=0;
@@ -118,6 +123,7 @@ ImageView image;
     FloatingActionButton fab;
     RecyclerView recyclerView;
     ImageView back;
+    String dataShare;
     ImageView trailers,reviews;
 //    ThumbUpView mThumbUpView;
     private ArrayList<String> mTrailerInfo = new ArrayList<>();
@@ -182,7 +188,10 @@ fab.setAlpha(1);
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(getActivity());
         // repeat many times:
          itemIcon1 = new ImageView(getActivity());
+        if(!inDatabase)
         itemIcon1.setImageResource(R.drawable.like_hollow_heart);
+        else
+            itemIcon1.setImageResource(R.drawable.like_filled_heart);
 
          itemIcon2 = new ImageView(getActivity());
         itemIcon2.setImageResource(R.drawable.share);
@@ -206,7 +215,7 @@ fab.setAlpha(1);
 
         trailers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-              sendjsonRequestVideos(movieID);
+              sendjsonRequestVideos(movieID,"notShare");
 
             }
         });
@@ -253,11 +262,40 @@ fab.setAlpha(1);
             movieRating.setText(favaudienceScore);
             movieSynopsis.setText(favoverview);
          int a=  imageRequest(favcoverImage);
+          int b= inDatabase(movieID);
 
         }
         else if((fragmentValue.equals("popular"))||(fragmentValue.equals("toprated")))
 
             sendjsonRequest(movieID);
+        sendjsonRequestVideos(movieID,"share");
+
+        dbHelper = new DbHelper(getActivity());
+        if((dbHelper.isInDatabase(Integer.parseInt(movieID))))
+            itemIcon1.setImageResource(R.drawable.like_filled_heart);
+        else
+            itemIcon1.setImageResource(R.drawable.like_hollow_heart);
+
+
+        itemIcon1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+                if(!(dbHelper.isInDatabase(Integer.parseInt(movieID))))
+                {
+                    inDatabase = true;
+                    itemIcon1.setImageResource(R.drawable.like_filled_heart);
+                    dbHelper.insertInDatabase(Integer.parseInt(movieID), titleStr, urlSelf, imageString, vote_average, popularity, tagline, releaseDateString, DurationString, genres, overview);
+
+                }
+                else if((dbHelper.isInDatabase(Integer.parseInt(movieID)))){
+                    inDatabase = false;
+                    itemIcon1.setImageResource(R.drawable.like_hollow_heart);
+                  dbHelper.deleteMovie(movieID);
+
+                }
+            }
+        });
         return view;
     }
 
@@ -284,7 +322,7 @@ int imageRequest(String imageString)
     return 1;
 }
 
-    public void sendjsonRequest(String id)
+    public void sendjsonRequest(final String id)
     {
 
         JsonObjectRequest request= new JsonObjectRequest(Request.Method.GET
@@ -295,7 +333,7 @@ int imageRequest(String imageString)
             @Override
             public void onResponse(JSONObject response) {
                 movieInfo = parseJsonResponse(response);
-
+inDatabase(id);
 //                mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
 
   //              mRecyclerView.setAdapter(mAdapter);
@@ -423,14 +461,10 @@ movieName.setText(titleStr);
                 movieRating.setText(String.format((movie.getAudienceScore()) + ""));
                 movieSynopsis.setText(movie.getOverview());
                 //movie.setLanguage(language);
-                itemIcon1.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        DbHelper dbHelper= new DbHelper(getActivity());
-                        dbHelper.insertInDatabase(Integer.parseInt(movieID),titleStr,urlSelf,imageString,vote_average,popularity,tagline,releaseDateString,DurationString,genres,overview);
+//inDatabase(movieID);
 
 
-                    }
-                });
+
 
                 itemIcon2.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
@@ -448,13 +482,50 @@ movieName.setText(titleStr);
 
 
 
+
+
+
+
  // Toast.makeText(getActivity(),movie.toString(),Toast.LENGTH_LONG).show();
 
         return movie;
     }
 
 
-    public void sendjsonRequestVideos(String id)
+    public int inDatabase(String movieID)
+    {
+          final String id=movieID;
+        dbHelper = new DbHelper(getActivity());
+        if((dbHelper.isInDatabase(Integer.parseInt(movieID))))
+            itemIcon1.setImageResource(R.drawable.like_filled_heart);
+        else
+            itemIcon1.setImageResource(R.drawable.like_hollow_heart);
+
+
+        itemIcon1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+                if(!(dbHelper.isInDatabase(Integer.parseInt(id))))
+                {
+                    inDatabase = true;
+                    itemIcon1.setImageResource(R.drawable.like_filled_heart);
+                    dbHelper.insertInDatabase(Integer.parseInt(id), titleStr, urlSelf, imageString, vote_average, popularity, tagline, releaseDateString, DurationString, genres, overview);
+
+                }
+                else {
+                    inDatabase = false;
+                    itemIcon1.setImageResource(R.drawable.like_hollow_heart);
+  //                  Uri contentUri = MovieProvider.CONTENT_URI;
+//                    activity.getContentResolver().delete(contentUri, "id=?", new String[]{id});
+
+                }
+            }
+        });
+        return 1;
+    }
+
+    public void sendjsonRequestVideos(String id, final String shareOrNot)
     {
 
         JsonObjectRequest request= new JsonObjectRequest(Request.Method.GET
@@ -467,11 +538,12 @@ movieName.setText(titleStr);
                 mTrailerInfo = parseJsonResponseVidedos(response);
                 recyclerView.setAlpha(0);
                 mRecyclerView.setAlpha(1);
-              mAdapter = new MovieDetailAdapter2(mTrailerInfo,getActivity());
-                mRecyclerView.setAdapter(mAdapter);
-                //Toast.makeText(getActivity(),"the toast", Toast.LENGTH_SHORT).show();
-                mAdapter.notifyDataSetChanged();
-
+                if(shareOrNot.equals("notShare")) {
+                    mAdapter = new MovieDetailAdapter2(mTrailerInfo, getActivity());
+                    mRecyclerView.setAdapter(mAdapter);
+                    //Toast.makeText(getActivity(),"the toast", Toast.LENGTH_SHORT).show();
+                    mAdapter.notifyDataSetChanged();
+                }
                 //adapterBoxOffice.setMovieList(listMovies);
                 //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
             }
@@ -499,6 +571,7 @@ movieName.setText(titleStr);
                         + "," + mTrailerObject.getString("site") + "," + mTrailerObject.getString("size")
                         + "," + mTrailerObject.getString("type"));
 
+                             dataShare="http://www.youtube.com/watch?v="+ mTrailerObject.getString("key") ;
             }
 
 
@@ -521,12 +594,11 @@ movieName.setText(titleStr);
             @Override
             public void onResponse(JSONObject response) {
                 mReviewInfo = parseJsonResponseReviews(response);
-mRecyclerView.setAlpha(0);
-                recyclerView.setAlpha(1);
-              mAdapter = new MovieDetailAdapter3(mReviewInfo,getActivity());
-                recyclerView.setAdapter(mAdapter);
+                recyclerView.setAlpha(0);
+                mRecyclerView.setAlpha(1);
+                mAdapter = new MovieDetailAdapter3(mReviewInfo,getActivity());
+                mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
-
 
             }
         }, new Response.ErrorListener() {
@@ -587,7 +659,7 @@ mRecyclerView.setAlpha(0);
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Text");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, dataShare);
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
 

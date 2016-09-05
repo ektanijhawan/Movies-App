@@ -132,7 +132,7 @@ String urlSelf=movie.getUrlSelf();
         String genre=movie.getGenre();
         String overview= movie.getOverview();
 
-        i.putExtra("id",id);
+        i.putExtra("stringId",id);
         i.putExtra("title", title);
         i.putExtra("coverImage", coverImage);
         i.putExtra("urlSelf", urlSelf);

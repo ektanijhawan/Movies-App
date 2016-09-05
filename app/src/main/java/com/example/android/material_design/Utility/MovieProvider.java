@@ -23,7 +23,7 @@ public class MovieProvider extends ContentProvider {
 
     static final String PROVIDER_NAME = "com.example.android.material_design.Utility.MovieProvider";
     static final String URL = "content://" + PROVIDER_NAME + "/cte";
-    static final Uri CONTENT_URI = Uri.parse(URL);
+    public static final Uri CONTENT_URI = Uri.parse(URL);
 DbHelper dbHelper;
     static final String id = "id";
     static final String name = "name";

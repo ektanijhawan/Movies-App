@@ -138,6 +138,13 @@ Boolean isInDb= isInDatabase(id);
 
     }
 
+    public void deleteMovie(String id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_MOVIES, ID + "=" +id , null);
+        db.close();
+    }
+
     public ArrayList<Movie> getAllComments() {
         ArrayList<Movie> movies = new ArrayList<Movie>();
 
