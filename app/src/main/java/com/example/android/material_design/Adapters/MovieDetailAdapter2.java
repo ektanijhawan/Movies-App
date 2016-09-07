@@ -37,6 +37,7 @@ public class MovieDetailAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewH
     private ImageLoader imageLoader;
     private String dataZero;
     int a,b;
+    boolean review=false;
 
 
 
@@ -48,6 +49,16 @@ public class MovieDetailAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewH
         // this.context = context;
         this.trailerInfo = trailerInfo;
     }
+    public MovieDetailAdapter2(ArrayList<String> reviewsInfo, Context context,boolean review) {
+        contextt = context;
+        layoutInflater = LayoutInflater.from(contextt);
+        volleySingleton = VolleySingleton.getInstance();
+        imageLoader = volleySingleton.getmImageLoader();
+        // this.context = context;
+        this.reviewsInfo=reviewsInfo;
+
+    }
+
 
 
     @Override

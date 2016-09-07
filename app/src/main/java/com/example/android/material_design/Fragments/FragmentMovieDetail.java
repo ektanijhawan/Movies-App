@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.android.material_design.Adapters.MovieDetailAdapter;
 import com.example.android.material_design.Adapters.MovieDetailAdapter2;
 import com.example.android.material_design.Adapters.MovieDetailAdapter3;
 import com.example.android.material_design.Database.DataSource;
@@ -146,16 +148,16 @@ ImageView image;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-movieName= (TextView) view.findViewById(R.id.movieName);
+//movieName= (TextView) view.findViewById(R.id.movieName);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_movie_detail);
         mLayoutManager = new LinearLayoutManager(activity);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView_movie_detail2);
+      //  recyclerView=(RecyclerView) view.findViewById(R.id.recyclerView_movie_detail2);
 
         mLayoutManager = new LinearLayoutManager(activity);
 
-        recyclerView.setLayoutManager(mLayoutManager);
+      //  recyclerView.setLayoutManager(mLayoutManager);
         //    fragmentManager = getSupportFragmentManager();//
 movie= new Movie();
         volleySingleton = VolleySingleton.getInstance();
@@ -163,8 +165,8 @@ movie= new Movie();
         movieImage = (ImageView) view.findViewById(R.id.ivMovieImage);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         back = (ImageView) view.findViewById(R.id.ivBack);
-       trailers= (ImageView) view.findViewById(R.id.ivTrailer);
-        reviews= (ImageView) view.findViewById(R.id.ivReviews);
+     //  trailers= (ImageView) view.findViewById(R.id.ivTrailer);
+      //  reviews= (ImageView) view.findViewById(R.id.ivReviews);
         imageLoader = volleySingleton.getmImageLoader();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,22 +229,27 @@ fab.setAlpha(1);
 
         //sendjsonRequest(movieID);
 
-        trailers.setOnClickListener(new View.OnClickListener() {
+    /*    trailers.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-              sendjsonRequestVideos(movieID,"notShare");
+                if(!fragmentValue.equals("favourite"))
+                {    mRecyclerView.clearFocus();
+                    sendjsonRequestVideos(movieID,"notShare");}
 
             }
         });
         reviews.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sendJsonRequestReviews(movieID);
+                if(!fragmentValue.equals("favourite"))
+                {    mRecyclerView.removeAllViews();
+                    mRecyclerView.clearFocus();
+                    sendJsonRequestReviews(movieID);}
             }
         });
 
 
 
         //sendjsonRequestVideos(movieID);
-     /*   mThumbUpView.setUnLikeType(ThumbUpView.LikeType.broken);
+        mThumbUpView.setUnLikeType(ThumbUpView.LikeType.broken);
         mThumbUpView.setCracksColor(Color.rgb(22, 33, 44));
         mThumbUpView.setFillColor(Color.rgb(11, 200, 77));
         mThumbUpView.setEdgeColor(Color.rgb(33, 3, 219));
@@ -282,7 +289,7 @@ fab.setAlpha(1);
         else if((fragmentValue.equals("popular"))||(fragmentValue.equals("toprated")))
 
             sendjsonRequest(movieID);
-        sendjsonRequestVideos(movieID,"share");
+
 
         dbHelper = new DbHelper(getActivity());
         if((dbHelper.isInDatabase(Integer.parseInt(movieID))))
@@ -336,26 +343,21 @@ int imageRequest(String imageString)
             public void onResponse(JSONObject response) {
                 movieInfo = parseJsonResponse(response);
 inDatabase(id);
+
+                sendjsonRequestVideos(movieID);
 //                mAdapter = new MovieDetailAdapter(movieInfo,getActivity());
 
   //              mRecyclerView.setAdapter(mAdapter);
 
 
-             /*   FragmentTransaction t = getActivity().getSupportFragmentManager()
-                        .beginTransaction();
-                FragmentMovieOverview mFrag = new FragmentMovieOverview();
-                mFrag.setArguments(data);
-                t.replace(R.id.viewpager, mFrag);
-                Toast.makeText(getActivity() ,"hhhhhhhhhh ",Toast.LENGTH_SHORT).show();
-                t.commit();
-                */
 
            //     mAdapter.notifyDataSetChanged();
 
                 //adapterBoxOffice.setMovieList(listMovies);
                 //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
+        },
+                new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //  Toast.makeText(getActivity(),"error" + " ",Toast.LENGTH_SHORT).show();
@@ -426,7 +428,7 @@ int a=imageRequest(imageString);
 
                 }
                 */
-movieName.setText(titleStr);
+//                movieName.setText(titleStr);
                 movie.setStringid(movieID);
                 movie.setTitle(titleStr);
                 movie.setCoverImage(imageString);
@@ -445,7 +447,7 @@ movieName.setText(titleStr);
 
                      //tvGenre.setText(genres);
 
-
+/*
                 if (!movie.getTagLine().equals("")) {
                     movieTagLine.setText("\" " + movie.getTagLine() + " \"");
                 } else if (movie.getTagLine().equals("")) {
@@ -464,7 +466,7 @@ movieName.setText(titleStr);
                 movieSynopsis.setText(movie.getOverview());
                 //movie.setLanguage(language);
 //inDatabase(movieID);
-
+*/
 
 
 
@@ -536,6 +538,7 @@ Log.v("hi","hi");
                         activity.getContentResolver().insert(MovieProvider.CONTENT_URI, contentValues);
 
                         Log.d("database", "inserted");
+                    Toast.makeText(getActivity(),"\"Liked\"",Toast.LENGTH_SHORT).show();
 
                     //}
 
@@ -549,13 +552,14 @@ Log.v("hi","hi");
 
                     Uri contentUri = MovieProvider.CONTENT_URI;
                     activity.getContentResolver().delete(contentUri, dbHelper.ID+"=?", new String[]{id});
+                    Toast.makeText(getActivity(),"\"Unliked\"",Toast.LENGTH_SHORT).show();
                 }
             }
         });
         return 1;
     }
 
-    public void sendjsonRequestVideos(String id, final String shareOrNot)
+    public void sendjsonRequestVideos(String id)
     {
 
         JsonObjectRequest request= new JsonObjectRequest(Request.Method.GET
@@ -566,17 +570,19 @@ Log.v("hi","hi");
             @Override
             public void onResponse(JSONObject response) {
                 mTrailerInfo = parseJsonResponseVidedos(response);
-                recyclerView.setAlpha(0);
-                mRecyclerView.setAlpha(1);
-                if(shareOrNot.equals("notShare")) {
-                    mAdapter = new MovieDetailAdapter2(mTrailerInfo, getActivity());
-                    mRecyclerView.setAdapter(mAdapter);
+             //   recyclerView.setAlpha(0);
+               // mRecyclerView.setAlpha(1);
+              //  if(shareOrNot.equals("notShare")) {
+                //    mTrailerInfo = parseJsonResponseVidedos(response,"notShare");
+                    sendJsonRequestReviews(movieID);
+                 //   mAdapter = new MovieDetailAdapter2(mTrailerInfo, getActivity());
+                   // mRecyclerView.setAdapter(mAdapter);
                     //Toast.makeText(getActivity(),"the toast", Toast.LENGTH_SHORT).show();
-                    mAdapter.notifyDataSetChanged();
+                    //mAdapter.notifyDataSetChanged();
                 }
                 //adapterBoxOffice.setMovieList(listMovies);
                 //  Toast.makeText(this ,response.toString() + " ",Toast.LENGTH_SHORT).show();
-            }
+            //}
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -601,7 +607,9 @@ Log.v("hi","hi");
                         + "," + mTrailerObject.getString("site") + "," + mTrailerObject.getString("size")
                         + "," + mTrailerObject.getString("type"));
 
-                             dataShare="http://www.youtube.com/watch?v="+ mTrailerObject.getString("key") ;
+    dataShare = "http://www.youtube.com/watch?v=" + mTrailerObject.getString("key");
+
+
             }
 
 
@@ -624,9 +632,10 @@ Log.v("hi","hi");
             @Override
             public void onResponse(JSONObject response) {
                 mReviewInfo = parseJsonResponseReviews(response);
-                recyclerView.setAlpha(0);
-                mRecyclerView.setAlpha(1);
-                mAdapter = new MovieDetailAdapter3(mReviewInfo,getActivity());
+            //    recyclerView.setAlpha(0);
+           //     mRecyclerView.setAlpha(1);
+
+                mAdapter = new MovieDetailAdapter(movie,mTrailerInfo,mReviewInfo,getActivity());
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
 
@@ -650,8 +659,8 @@ Log.v("hi","hi");
         try {
             JSONArray mReviewResultArray = response.getJSONArray("results");
             for (int i = 0; i < mReviewResultArray.length(); i++) {
-                JSONObject mTrailerObject = mReviewResultArray.getJSONObject(i);
-                mReviewInfo.add(mTrailerObject.getString("author") + "," + mTrailerObject.getString("content"));
+                JSONObject mReviewObject = mReviewResultArray.getJSONObject(i);
+                mReviewInfo.add(mReviewObject.getString("author") + "," + mReviewObject.getString("content"));
 
 
             }
@@ -659,7 +668,7 @@ Log.v("hi","hi");
         catch (JSONException e)
         {}
 
-        return mTrailerInfo;
+        return mReviewInfo;
     }
   /*  protected void sendEmail() {
         Log.i("Send email", "");

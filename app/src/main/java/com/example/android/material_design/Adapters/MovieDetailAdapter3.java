@@ -63,7 +63,9 @@ public class MovieDetailAdapter3 extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
                 final String[] ReviewData =  reviewsInfo.get(position ).split(",");
+        ((ReviewsViewHolder) holder).reviwerName.clearFocus();
                 ((ReviewsViewHolder) holder).reviwerName.setText(ReviewData[0]);
+        ((ReviewsViewHolder) holder).reviwerDesc.clearFocus();
                 ((ReviewsViewHolder) holder).reviwerDesc.setText(ReviewData[1]);
 
 
