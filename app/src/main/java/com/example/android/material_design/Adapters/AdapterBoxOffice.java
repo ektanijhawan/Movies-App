@@ -70,6 +70,7 @@ public class AdapterBoxOffice extends RecyclerView.Adapter<AdapterBoxOffice.View
 
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    holder.movieImage.setImageResource(android.R.color.transparent);
                     holder.movieImage.setImageBitmap(response.getBitmap());
                 }
             });

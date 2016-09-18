@@ -2,7 +2,9 @@ package com.example.android.material_design.Fragments;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -201,8 +203,14 @@ movie.setUrlSelf(image_whole_Url);
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_box_office, container, false);
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+         GridLayoutManager gridLayoutManager= new GridLayoutManager(getActivity(), 2);
         listMoviesHits = (RecyclerView) view.findViewById(R.id.listMoviesHits);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        }
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        }
         listMoviesHits.setLayoutManager(gridLayoutManager);
         adapterBoxOffice = new AdapterBoxOffice(getActivity());
 
@@ -217,8 +225,7 @@ movie.setUrlSelf(image_whole_Url);
                 ((GridLayoutManager) listMoviesHits.getLayoutManager()).scrollToPosition(lastFirstVisiblePosition);
 
       if(pages>pageCount) {
-                   // pageCount++;
-                   // sendJsonRequest(pageCount);
+
                 }
 
 
@@ -228,6 +235,11 @@ movie.setUrlSelf(image_whole_Url);
 
                 listMoviesHits.setAdapter(adapterBoxOffice);
         return view;
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 
         @Override

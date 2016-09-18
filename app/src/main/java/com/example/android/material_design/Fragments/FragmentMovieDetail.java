@@ -261,6 +261,7 @@ fab.setAlpha(1);
         mThumbUpView.Like();
         mThumbUpView.UnLike();
         */
+
         //movieImage = (ImageView) view.findViewById(R.id.movieImage);
         movieName = (TextView) view.findViewById(R.id.tvMovieTitle);
         movieTagLine = (TextView) view.findViewById(R.id.tvMovieTagLine);
@@ -270,20 +271,36 @@ fab.setAlpha(1);
         moviePopularity = (TextView) view.findViewById(R.id.tvMoviePopularity);
         movieRating = (TextView) view.findViewById(R.id.tvMovieRating);
         movieSynopsis = (TextView) view.findViewById(R.id.tvMovieSynopsis);
-        movieLanguage = (TextView) view.findViewById(R.id.tvMovieLanguage);
+       // movieLanguage = (TextView) view.findViewById(R.id.tvMovieLanguage);
 
 
        if(fragmentValue.equals("favourite")){
-            movieName.setText(favtitle);
-            movieTagLine.setText(favtagLine);
+//            movieName.setText(favtitle);
+
+           int b= inDatabase(movieID);
+  Toast.makeText(getActivity(),favcoverImage,Toast.LENGTH_SHORT).show();
+           movie.setStringid(movieID);
+           movie.setTitle(favtitle);
+           movie.setTagLine(favtagLine);
+           movie.setAudienceScore(favaudienceScore);
+           movie.setPopularity(popularity);
+           movie.setReleasedate(favreleaseDate);
+           movie.setDuration(favduration);
+           movie.setGenre(favgenre);
+           movie.setOverview(favoverview);
+           int a=  imageRequest(favcoverImage);
+           mAdapter = new MovieDetailAdapter(movie,mTrailerInfo,mReviewInfo,getActivity());
+           mRecyclerView.setAdapter(mAdapter);
+           mAdapter.notifyDataSetChanged();
+           /*movieTagLine.setText(favtagLine);
             movieReleaseDate.setText(favreleaseDate);
             movieDuration.setText(favduration);
             movieGenre.setText(favgenre);
             moviePopularity.setText(favpopularity);
             movieRating.setText(favaudienceScore);
             movieSynopsis.setText(favoverview);
-         int a=  imageRequest(favcoverImage);
-          int b= inDatabase(movieID);
+        */
+
 
         }
         else if((fragmentValue.equals("popular"))||(fragmentValue.equals("toprated")))
@@ -323,6 +340,7 @@ int imageRequest(String imageString)
 
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                movieImage.setImageBitmap(null);
                 movieImage.setImageBitmap(response.getBitmap());
             }
         });
@@ -524,7 +542,7 @@ Log.v("hi","hi");
                         contentValues.put(ID, Integer.parseInt(id));
                         contentValues.put(TITLE, titleStr);
                         contentValues.put(URLSELF, urlSelf);
-                        contentValues.put(COVERIMAGE, coverImage);
+                        contentValues.put(COVERIMAGE, imageString);
                         contentValues.put(AUDIENCESCORE, vote_average);
                         contentValues.put(POPULARITY, popularity);
                         contentValues.put(TAGLINE, tagline);

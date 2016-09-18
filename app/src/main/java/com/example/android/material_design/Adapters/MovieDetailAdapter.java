@@ -197,7 +197,7 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             moviePopularity = (TextView) itemView.findViewById(R.id.tvMoviePopularity);
             movieRating = (TextView) itemView.findViewById(R.id.tvMovieRating);
             movieSynopsis = (TextView) itemView.findViewById(R.id.tvMovieSynopsis);
-            movieLanguage = (TextView) itemView.findViewById(R.id.tvMovieLanguage);
+        //    movieLanguage = (TextView) itemView.findViewById(R.id.tvMovieLanguage);
             // movieTitle = (TextView) itemView.findViewById(R.id.movieTitle);
         }
 
